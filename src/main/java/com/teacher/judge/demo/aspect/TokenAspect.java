@@ -1,13 +1,16 @@
 package com.teacher.judge.demo.aspect;
 
+import com.teacher.judge.demo.bean.Configs;
 import com.teacher.judge.demo.enums.ResultEnum;
 import com.teacher.judge.demo.exception.TeachException;
+import com.teacher.judge.demo.service.impl.TokenServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -18,8 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @Slf4j
 public class TokenAspect {
+    @Autowired
+    private TokenServiceImpl tokenServiceImpl;
+    @Autowired
+    private Configs configs;
 
-    @Pointcut("execution(public * com.teacher.judge.demo.controller.*.*(..))")
+    @Pointcut("execution(public * com.teacher.judge.demo.controller.*.*(..)) && !execution(public * com.teacher.judge.demo.controller.UserController.login(..))")
     public void log(){
         // 此处不会执行
     }
@@ -32,6 +39,10 @@ public class TokenAspect {
             throw new TeachException(ResultEnum.TOKEN_NOT_EXIST);
         }
         log.info("传入token={}",token);
+        // 验证token有效性
+        if(!tokenServiceImpl.validToken(token)){
+            throw new TeachException(ResultEnum.TOKEN_IS_EXPIRE);
+        }
         // 类方法
         log.info("类方法={}",jp.getSignature().getDeclaringTypeName() + ":" + jp.getSignature().getName());
         // 参数

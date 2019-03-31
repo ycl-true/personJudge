@@ -9,7 +9,8 @@ public interface UserService {
     /**更新用户信息*/
     boolean updateUserInfo(User user);
 
-    /***/
+    /**通过姓名、密码查找用户*/
+    User findByUserNameAndAndPassword(String name, String pass);
 
     /***/
 

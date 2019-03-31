@@ -5,3 +5,6 @@ spring:
 logging:
   pattern:
     console: "%d -- %msg%n"
+
+configs:
+  timeOut: 3
