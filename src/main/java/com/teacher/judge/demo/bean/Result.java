@@ -19,4 +19,8 @@ public class Result<T> {
         this.msg = resultEnum.getMsg();
         this.data = (T) o;
     }
+    public Result(ResultEnum resultEnum){
+        this.code = resultEnum.getCode();
+        this.msg = resultEnum.getMsg();
+    }
 }

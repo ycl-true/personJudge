@@ -20,4 +20,5 @@ public class Token {
     private String tokenId;
     private String userId;
     private Date loginDate;
+    private String valid;
 }

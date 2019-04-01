@@ -3,6 +3,7 @@ package com.teacher.judge.demo.service.impl;
 import com.teacher.judge.demo.bean.Configs;
 import com.teacher.judge.demo.bo.Token;
 import com.teacher.judge.demo.dao.TokenDao;
+import com.teacher.judge.demo.enums.Constant;
 import com.teacher.judge.demo.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,23 +26,32 @@ public class TokenServiceImpl implements TokenService {
         Token token = new Token();
         token.setUserId(userId);
         token.setLoginDate(new Date());
+        token.setValid(Constant.YES.getValue());
         token = tokenDao.save(token);
         log.info("插入的token={}", token.toString());
         return token.getTokenId();
     }
 
     @Override
-    public boolean validToken(String token) {
-        Token tokenObj = tokenDao.getOne(token);
-        long cureentTime = System.currentTimeMillis();
-        log.info("配置毫秒={}",configs.getTimeOut() * 60 * 1000);
-        log.info("数据库时间={}",tokenObj.getLoginDate().getTime());
-        log.info("时间范围={}",tokenObj.getLoginDate().getTime() + configs.getTimeOut() * 60 * 1000);
-        log.info("当前时间={}",cureentTime);
-        if(tokenObj != null && tokenObj.getLoginDate().getTime() + configs.getTimeOut() * 60 * 1000 > cureentTime){
-            // 时间没过期，则返回true
+    public boolean validToken(String tokenId) {
+        Token tokenObj = tokenDao.getOne(tokenId);
+        long currentTime = System.currentTimeMillis();
+        log.info("token有效性=",tokenObj.getValid());
+        log.info("当前时间={}", new Date());
+        log.info("最大时间范围<{}", new Date(tokenObj.getLoginDate().getTime() + configs.getTimeOut() * 60 * 1000));
+        if (tokenObj != null
+                && Constant.YES.getValue().equals(tokenObj.getValid())
+                && tokenObj.getLoginDate().getTime() + configs.getTimeOut() * 60 * 1000 > currentTime) {
+            // token有效且时间没过期，则返回true
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void dropToken(String tokenId) {
+        Token tokenObj = tokenDao.getOne(tokenId);
+        tokenObj.setValid(Constant.NO.getValue());
+        tokenDao.save(tokenObj);
     }
 }

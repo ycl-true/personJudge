@@ -11,4 +11,7 @@ public class ApplyUtil {
     public static Result success(Object data){
         return new Result(ResultEnum.SUCCESS, data);
     }
+    public static Result success(){
+        return new Result(ResultEnum.SUCCESS);
+    }
 }

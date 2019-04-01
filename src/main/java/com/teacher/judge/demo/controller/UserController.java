@@ -16,6 +16,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @RestController
@@ -45,6 +46,16 @@ public class UserController {
             throw new TeachException(ResultEnum.USER_NOT_EXIST);
         }
     }
+
+    // 登出即token置为无效（前提：token有效）
+    @GetMapping(value = "/loginOut")
+    @ApiImplicitParam(paramType = "header", name = "token", value = "token", required = true, dataType = "String")
+    public Result loginOut(HttpServletRequest request) {
+        String tokenId = request.getHeader("token");
+        tokenServiceImpl.dropToken(tokenId);
+        return ApplyUtil.success();
+    }
+
 
     @GetMapping(value = "/getAllUser")
     public User getAllUser() {

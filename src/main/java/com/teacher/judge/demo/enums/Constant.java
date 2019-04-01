@@ -5,10 +5,12 @@ import lombok.Getter;
 
 @Getter
 public enum Constant {
+    YES("1"),
+    NO("0"),
     TEACHER("0")
     ;
-    private String type;
-    Constant(String type){
-        this.type = type;
+    private String value;
+    Constant(String value){
+        this.value = value;
     }
 }
