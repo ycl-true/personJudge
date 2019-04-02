@@ -26,7 +26,9 @@ public class TokenAspect {
     @Autowired
     private Configs configs;
 
-    @Pointcut("execution(public * com.teacher.judge.demo.controller.*.*(..)) && !execution(public * com.teacher.judge.demo.controller.UserController.login(..))")
+    @Pointcut("execution(public * com.teacher.judge.demo.controller.*.*(..)) " +
+            "&& !execution(public * com.teacher.judge.demo.controller.UserController.login(..))" +
+            "&& !execution(public * com.teacher.judge.demo.controller.UserController.register(..))")
     public void log(){
         // 此处不会执行
     }

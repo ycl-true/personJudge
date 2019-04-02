@@ -9,10 +9,13 @@ public interface UserService {
     /**更新用户信息*/
     boolean updateUserInfo(User user);
 
-    /**通过姓名、密码查找用户*/
+    /**通过账号、密码查找用户*/
     User findByUserNameAndAndPassword(String name, String pass);
 
-    /***/
+    /**保存/更新用户*/
+    User save(User user);
 
-    /***/
+    /**通过账号查找用户*/
+    User findByUserName(String userName);
+
 }
