@@ -47,4 +47,8 @@ public class Swagger2 {
                 .version("1.0")
                 .build();
     }
+
+    public static void main(String[] args){
+        System.out.println("hello");
+    }
 }
