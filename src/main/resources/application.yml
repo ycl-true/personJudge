@@ -1,3 +1,5 @@
+#debug:
+#  true
 spring:
   profiles:
     active: dev
@@ -7,4 +9,5 @@ logging:
     console: "%d -- %msg%n"
 
 configs:
+  # 过期时间（分钟）
   timeOut: 3

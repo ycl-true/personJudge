@@ -1,5 +1,6 @@
 package com.teacher.judge.demo.controller;
 
+import com.teacher.judge.demo.bean.LoginBean;
 import com.teacher.judge.demo.bean.Register;
 import com.teacher.judge.demo.bean.Result;
 import com.teacher.judge.demo.bo.User;
@@ -12,7 +13,6 @@ import com.teacher.judge.demo.util.ApplyUtil;
 import com.teacher.judge.demo.vo.UserVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +32,14 @@ public class UserController {
     private TokenServiceImpl tokenServiceImpl;
 
     // 用户登录
-    @GetMapping(value = "/login")
+    @PostMapping(value = "/login")
     @ApiOperation(value = "用户登录", notes = "返回用户数据+token")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "userName", value = "用户名", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "passWord", value = "密码", required = true, dataType = "String")
-    })
-    public Result login(@RequestParam("userName") String userName, @RequestParam("passWord") String passWord) {
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
+    public Result login(@RequestBody LoginBean loginBean) {
+        if (StringUtils.isEmpty(loginBean.getUserName()) || StringUtils.isEmpty(loginBean.getPassWord())) {
             throw new TeachException(ResultEnum.PARAM_NOT_EXIST);
         }
         // 校验是否存在用户
-        User user = userServiceImpl.findByUserNameAndAndPassword(userName, passWord);
+        User user = userServiceImpl.findByUserNameAndAndPassword(loginBean.getUserName(), loginBean.getPassWord());
         String token = null;
         if (user != null) {
             // 存在则插入token表
@@ -51,6 +47,7 @@ public class UserController {
             UserVo vo = new UserVo();
             BeanUtils.copyProperties(user, vo);
             vo.setToken(token);
+            System.out.println(ApplyUtil.success(vo));
             return ApplyUtil.success(vo);
         } else {
             // 不存在则抛出异常
@@ -105,8 +102,8 @@ public class UserController {
     @PostMapping(value = "/getUserVo")
     @ApiOperation(value = "这是一个post", notes = "post_notes")
     @ApiImplicitParam(paramType = "header", name = "token", value = "token", required = true, dataType = "String")
-    public UserVo getUserVo(@RequestBody UserVo userVo) {
-        return userVo;
+    public Result getUserVo(@RequestBody UserVo userVo) {
+        return ApplyUtil.success(userVo);
     }
 
     public static void main(String[] args) {

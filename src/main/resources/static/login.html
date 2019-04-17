@@ -1,11 +1,171 @@
-<html>
-<head></head>
-<body>
-  <input type="text">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script>
+    <title>教师评价系统</title>
+    <meta name="keywords" content="教师评价系统">
+    <meta name="description" content="教师评价系统">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="css/login.min.css" rel="stylesheet">
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 
-  </script>
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>
+        if(window.top!==window.self){window.top.location=window.location};
+    </script>
+
+</head>
+
+<body class="signin">
+    <div class="signinpanel">
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="signin-info">
+                    <div class="logopanel m-b">
+                        <h1>[ 教师评价系统 ]</h1>
+                    </div>
+                    <div class="m-b"></div>
+                    <h4>欢迎使用 <strong>教师评价系统</strong></h4>
+                    <ul class="m-b">
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 学生评价</li>
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 教师自评</li>
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 专家测评</li>
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 三位一体</li>
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 更多功能。。。</li>
+                    </ul>
+                    <strong id="login" style="display: none">已有账号？ <a href="javascript:" onclick="changeItem('login');return false;">立即登录&raquo;</a></strong>
+                    <strong id="register">还没有账号？ <a href="javascript:" onclick="changeItem('register');return false;">立即注册&raquo;</a></strong>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <form>
+                    <h4 class="no-margins" id="rgTitle">登录</h4>
+                    <p class="m-t-md" id="rgMsg">登录到教师管理系统</p>
+                    <div class="radio radio-info radio-inline" id="radio_1" style="display: none">
+                        <input type="radio"  value="1" name="type" checked="">
+                        <label for="radio_1"> 学生 </label>
+                    </div>
+                    <div class="radio radio-success radio-inline" id="radio_2" style="display: none">
+                        <input type="radio"  value="0" name="type">
+                        <label for="radio_2"> 教师 </label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="userName" class="form-control uname" placeholder="用户名" required=""/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="passWord" class="form-control pword m-b" placeholder="密码" required=""/>
+                    </div>
+                    <div class="form-group" id="rgPassword" style="display: none">
+                        <input type="password" id="passWord2" class="form-control pword m-b" placeholder="确认密码"/>
+                    </div>
+                    <!--<a href="#">忘记密码了？</a>-->
+                    <button class="btn btn-success btn-block" id="btn" onclick="return submitAll();">登录</button>
+                </form>
+            </div>
+        </div>
+        <div class="signup-footer">
+            <div class="pull-left">
+                &copy; 2019 All Rights Reserved.
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="js/plugins/toastr/toastr.min.js"></script>
+    <script src="js/common.js"></script>
+    <script type="text/javascript">
+        var applyType = 'login';
+        var condition;
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "progressBar": true,
+            "positionClass": "toast-middle-right",
+            "showDuration": "400",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        function init(){
+            condition = {
+                userName: $('#userName').val(),
+                passWord: $('#passWord').val(),
+                type: $("input[name='type']:checked").val()
+            };
+            console.log(condition.type);
+        }
+        function changeItem(type){
+            applyType = type;
+            if(type == 'login'){
+                $('#rgPassword').css('display','none');
+                $("div[id^='radio_']").css('display','none');
+                $('#register').css('display','block');
+                $('#login').css('display','none');
+                $('#btn').text('登录');
+                $('#rgTitle').text('登录');
+                $('#rgMsg').text('登录到教师管理系统');
+                $('#passWord2').removeAttr('required');
+            } else if(type == 'register'){
+                $('#rgPassword').css('display','');
+                $("div[id^='radio_']").css('display','');
+                $('#register').css('display','none');
+                $('#login').css('display','block');
+                $('#btn').text('注册');
+                $('#rgTitle').text('注册');
+                $('#rgMsg').text('注册账号');
+                $('#passWord2').attr('required','true');
+            }
+        }
+        function submitAll(){
+            init();
+            var urlStr;
+            if(condition.passWord == "" || condition.userName == ""){
+                return true;
+            }
+            if(applyType == 'login'){
+                urlStr = "user/login";
+            } else if(applyType == 'register'){
+                urlStr = "user/register";
+                if(condition.passWord != $('#passWord2').val()){
+                    toastr.info('输入密码不一致！');
+                    return false;
+                }
+            }
+            ajaxCommon({
+                url: urlStr,
+                data: JSON.stringify(condition)
+            }, function(obj) {
+                if(obj.code == 200){
+                    var data = obj.data;
+                    $.cookie("Token",data.token);
+                    // 设置User对象保存
+                    delete data.token;
+                    window.localStorage.setItem("User",JSON.stringify(data));
+                    window.location.href = "ajaxTest.html";
+                } else if(obj.code == 500){
+                    // 账号密码错误
+                    toastr.error("账号或密码错误!");
+                } else if(obj.code == 100){
+                    toastr.info("参数缺少参数!");
+                }
+            }, true);
+            // 防止表单提交
+            return false;
+        }
+    </script>
 </body>
 </html>

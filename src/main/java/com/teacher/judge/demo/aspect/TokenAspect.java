@@ -40,9 +40,17 @@ public class TokenAspect {
         if(null == token || token.isEmpty()){
             throw new TeachException(ResultEnum.TOKEN_NOT_EXIST);
         }
+        //--需要注意的是当一个支持缓存的方法在对象内部被调用时是不会触发缓存功能的（意思是在方法自身内部调用）
+        tokenServiceImpl.test("66666666");
+        tokenServiceImpl.test_2("66666666");
+        //--
         log.info("传入token={}",token);
         // 验证token有效性
-        if(!tokenServiceImpl.validToken(token)){
+        try{
+            if(!tokenServiceImpl.validToken(token)){
+                throw new TeachException(ResultEnum.TOKEN_IS_EXPIRE);
+            }
+        } catch(Exception e) {
             throw new TeachException(ResultEnum.TOKEN_IS_EXPIRE);
         }
         // 类方法

@@ -3,7 +3,7 @@ package com.teacher.judge.demo.vo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-@ApiModel(value = "用户对象")
+@ApiModel(value = "用户对象", description = "用户对象信息")
 @Data
 public class UserVo {
 

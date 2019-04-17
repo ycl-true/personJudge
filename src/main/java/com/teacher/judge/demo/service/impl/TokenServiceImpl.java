@@ -7,6 +7,7 @@ import com.teacher.judge.demo.enums.Constant;
 import com.teacher.judge.demo.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,7 +34,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public boolean validToken(String tokenId) {
+    public boolean validToken(String tokenId) throws Exception{
         Token tokenObj = tokenDao.getOne(tokenId);
         long currentTime = System.currentTimeMillis();
         log.info("token有效性={}",tokenObj.getValid());
@@ -53,5 +54,21 @@ public class TokenServiceImpl implements TokenService {
         Token tokenObj = tokenDao.getOne(tokenId);
         tokenObj.setValid(Constant.NO.getValue());
         tokenDao.save(tokenObj);
+    }
+
+    @Override
+    public Token getOne(String token) {
+        return tokenDao.getOne(token);
+    }
+
+    @Cacheable(value = "test",key = "#id")
+    public String test(String id){
+        System.out.println(id + "--1--" +System.currentTimeMillis());
+        return id;
+    }
+    @Cacheable(value = "test1",key = "#id")
+    public String test_2(String id){
+        System.out.println(test(id) + "缓存后的--2--" +System.currentTimeMillis());
+        return id;
     }
 }

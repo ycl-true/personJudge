@@ -1,0 +1,79 @@
+
+
+/**
+ * ajax通用调用
+ *
+ * @param opt ajax选项
+ * @param callback ajax回调函数
+ */
+var ajaxCommon = function(opt, callback, returnFlag) {
+    // 默认ajax选项
+    var options = {
+        dataType: "json",
+        data: {},
+        async: true,
+        type: "POST",
+        contentType: "application/json;charset=UTF-8",
+        cache: true
+    };
+
+    // 获取ajax选项
+    $.extend(options, opt);
+
+    console.log(options.url+"\n"+options.data);
+
+    $.ajax({
+        url: options.url,
+        data: options.data,
+        dataType: options.dataType,
+        async: options.async,
+        type: options.type,
+        contentType: options.contentType,
+        cache: options.cache,
+        headers: {
+            "token": $.cookie("Token")
+        },
+        complete: function(jqXHR, textStatus) {
+            var result = eval('(' + jqXHR.responseText + ')');
+            console.log(result);
+            // 获取ajax返回的信息
+            if(textStatus == "success"){
+                // 无需通用跳转，自定义处理
+                if(!!returnFlag){
+                    if(typeof callback == "function") {
+                        callback(result);
+                        return false;
+                    }
+                }
+                // 通用处理，200直接返回，其他重新登录 ，-1弹出提示
+                if(result.code == 200){
+                    // 调用回调函数，以ajax返回的信息为参数
+                    if(typeof callback == "function") {
+                        callback(result);
+                        return false;
+                    }
+                } else if(result.code == 401 || result.code == 403 || result.code == 500){
+                    // 用户token过期或者非法访问，重新登录
+                    window.location.href = "login.html";
+                    // return false;
+                } else if(result.code == 100){
+                    alert("参数缺失!");
+                    return false;
+                } else if(result.code < 0){
+                    alert("系统错误!");
+                    return false;
+                }
+            } else {
+                // 没调通
+                alert("网络繁忙!");
+                return false;
+            }
+
+            // 如果响应头中包含跳转方式信息，则执行相应跳转操作
+            // if("html" == jqXHR.getResponseHeader("Jump-By")) {
+            //     document.write(result);
+            //     return false;
+            // }
+        }
+    });
+};
