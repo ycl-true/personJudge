@@ -61,6 +61,12 @@ public class TokenServiceImpl implements TokenService {
         return tokenDao.getOne(token);
     }
 
+    @Override
+    public void dropBeforeToken(String userId) {
+        tokenDao.updateValidOfUser(userId);
+    }
+
+
     @Cacheable(value = "test",key = "#id")
     public String test(String id){
         System.out.println(id + "--1--" +System.currentTimeMillis());

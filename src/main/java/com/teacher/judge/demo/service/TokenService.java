@@ -7,4 +7,5 @@ public interface TokenService {
     boolean validToken(String tokenId) throws Exception;
     void dropToken(String tokenId);
     Token getOne(String token);
+    void dropBeforeToken(String userId);
 }

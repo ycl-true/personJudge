@@ -42,6 +42,8 @@ public class UserController {
         User user = userServiceImpl.findByUserNameAndAndPassword(loginBean.getUserName(), loginBean.getPassWord());
         String token = null;
         if (user != null) {
+            // 将以往token置为无效
+            tokenServiceImpl.dropBeforeToken(user.getUserId());
             // 存在则插入token表
             token = tokenServiceImpl.insertToken(user.getUserId());
             UserVo vo = new UserVo();
