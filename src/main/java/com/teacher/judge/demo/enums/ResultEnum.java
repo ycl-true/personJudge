@@ -8,7 +8,7 @@ public enum ResultEnum {
     TOKEN_IS_EXPIRE(401,"用户消息过期"),
     TOKEN_NOT_EXIST(403,"非法访问"),
     PARAM_NOT_EXIST(100,"参数不全！"),
-    USER_NOT_EXIST(500,"账号密码错误！"),
+    USER_NOT_EXIST(500,"账号或密码错误！"),
     USER_IS_EXIST(501,"用户已注册！")
     ;
     private Integer code;

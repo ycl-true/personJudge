@@ -166,11 +166,11 @@
                     alert("成功");
                 } else if(obj.code == 500){
                     // 账号密码错误
-                    toastr.error("账号或密码错误!");
+                    toastr.error(obj.msg);
                 } else if(obj.code == 501){
-                    toastr.error("用户已注册!");
+                    toastr.error(obj.msg);
                 } else if(obj.code == 100){
-                    toastr.info("参数缺少参数!");
+                    toastr.info(obj.msg);
                 }
             }, true);
         }
