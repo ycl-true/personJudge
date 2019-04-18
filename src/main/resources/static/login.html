@@ -13,6 +13,7 @@
     <link href="css/animate.min.css" rel="stylesheet">
     <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
     <link href="css/login.min.css" rel="stylesheet">
+    <link href="css/common.min.css" rel="stylesheet">
     <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 
@@ -48,7 +49,6 @@
             </div>
             <div class="col-sm-5">
                 <div class="self">
-                <!--<form>-->
                     <h4 class="no-margins" id="rgTitle">登录</h4>
                     <p class="m-t-md" id="rgMsg">登录到教师管理系统</p>
                     <div class="radio radio-info radio-inline" id="radio_1" style="display: none">
@@ -71,7 +71,6 @@
                     <!--<a href="#">忘记密码了？</a>-->
                     <button class="btn btn-success btn-block" id="btn" onclick="submitAll();return false;">登录</button>
                 </div>
-                <!--</form>-->
             </div>
         </div>
         <div class="signup-footer">
@@ -119,6 +118,7 @@
                 $('#btn').text('登录');
                 $('#rgTitle').text('登录');
                 $('#rgMsg').text('登录到教师管理系统');
+                toastr.options.positionClass = 'toast-middle-right';
             } else if(type == 'register'){
                 $('#rgPassword').css('display','');
                 $("div[id^='radio_']").css('display','');
@@ -127,9 +127,11 @@
                 $('#btn').text('注册');
                 $('#rgTitle').text('注册');
                 $('#rgMsg').text('注册账号');
+                toastr.options.positionClass = 'toast-middle2-right';
             }
         }
         function submitAll(){
+            console.log(toastr.options.positionClass);
             init();
             var urlStr;
             if(applyType == 'login'){
