@@ -7,13 +7,14 @@ import com.teacher.judge.demo.bo.User;
 import com.teacher.judge.demo.enums.Constant;
 import com.teacher.judge.demo.enums.ResultEnum;
 import com.teacher.judge.demo.exception.TeachException;
-import com.teacher.judge.demo.service.impl.TokenServiceImpl;
-import com.teacher.judge.demo.service.impl.UserServiceImpl;
+import com.teacher.judge.demo.service.TokenService;
+import com.teacher.judge.demo.service.UserService;
 import com.teacher.judge.demo.util.ApplyUtil;
 import com.teacher.judge.demo.vo.UserVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
@@ -25,11 +26,12 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(value = "/user")
 @Api(value = "用户控制器")
+@Slf4j
 public class UserController {
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
     @Autowired
-    private TokenServiceImpl tokenServiceImpl;
+    private TokenService tokenService;
 
     // 用户登录
     @PostMapping(value = "/login")
@@ -39,13 +41,13 @@ public class UserController {
             throw new TeachException(ResultEnum.PARAM_NOT_EXIST);
         }
         // 校验是否存在用户
-        User user = userServiceImpl.findByUserNameAndAndPassword(loginBean.getUserName(), loginBean.getPassWord());
+        User user = userService.findByUserNameAndAndPassword(loginBean.getUserName(), loginBean.getPassWord());
         String token = null;
         if (user != null) {
             // 将以往token置为无效
-            tokenServiceImpl.dropBeforeToken(user.getUserId());
+            tokenService.dropBeforeToken(user.getUserId());
             // 存在则插入token表
-            token = tokenServiceImpl.insertToken(user.getUserId());
+            token = tokenService.insertToken(user.getUserId());
             UserVo vo = new UserVo();
             BeanUtils.copyProperties(user, vo);
             vo.setToken(token);
@@ -65,7 +67,7 @@ public class UserController {
             throw new TeachException(ResultEnum.PARAM_NOT_EXIST);
         }
         // 校验是否存在用户
-        User user = userServiceImpl.findByUserName(register.getUserName());
+        User user = userService.findByUserName(register.getUserName());
         if (user != null) {
             // 存在代表已经注册过了
             throw new TeachException(ResultEnum.USER_IS_EXIST);
@@ -75,11 +77,11 @@ public class UserController {
             u.setUserName(register.getUserName());
             u.setPassword(DigestUtils.md5DigestAsHex(register.getPassWord().getBytes()));
             u.setValid(Constant.YES.getValue());
-            u.setPersonType(register.getType().equals(Constant.TEACHER.getValue()) ? Constant.TEACHER.getValue() : Constant.STUDENT.getValue());
-            u = userServiceImpl.save(u);
+            u.setPersonType(ApplyUtil.getPersonType(register.getType()));
+            u = userService.save(u);
             UserVo vo = new UserVo();
             BeanUtils.copyProperties(u, vo);
-            vo.setToken(tokenServiceImpl.insertToken(u.getUserId()));
+            vo.setToken(tokenService.insertToken(u.getUserId()));
             return ApplyUtil.success(vo);
         }
     }
@@ -90,14 +92,14 @@ public class UserController {
     @ApiImplicitParam(paramType = "header", name = "token", value = "token值", required = true, dataType = "String")
     public Result loginOut(HttpServletRequest request) {
         String tokenId = request.getHeader("token");
-        tokenServiceImpl.dropToken(tokenId);
+        tokenService.dropToken(tokenId);
         return ApplyUtil.success();
     }
 
 
     @GetMapping(value = "/getAllUser")
     public User getAllUser() {
-        User user = userServiceImpl.findById("4028818b6984fde3016984fdf36a0000");
+        User user = userService.findById("4028818b6984fde3016984fdf36a0000");
         return user;
     }
 

@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @Data
 public class CommentInfo {
     @Id
-    @Column(length = 5)
+    @Column(length = 3)
     private String commentId;
     private String commentName;
     private String parentType;

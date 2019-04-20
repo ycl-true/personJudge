@@ -40,8 +40,8 @@
                         <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 学生评价</li>
                         <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 教师自评</li>
                         <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 专家测评</li>
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 三位一体</li>
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 更多功能。。。</li>
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 教师互评</li>
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 四位一体</li>
                     </ul>
                     <strong id="login" style="display: none">已有账号？ <a href="javascript:" onclick="changeItem('login');return false;">立即登录&raquo;</a></strong>
                     <strong id="register">还没有账号？ <a href="javascript:" onclick="changeItem('register');return false;">立即注册&raquo;</a></strong>
@@ -58,6 +58,10 @@
                     <div class="radio radio-success radio-inline" id="radio_2" style="display: none">
                         <input type="radio"  value="0" name="type">
                         <label for="radio_2"> 教师 </label>
+                    </div>
+                    <div class="radio radio-danger radio-inline" id="radio_3" style="display: none">
+                        <input type="radio"  value="2" name="type">
+                        <label for="radio_3"> 专家 </label>
                     </div>
                     <div class="form-group">
                         <input type="text" id="userName" class="form-control uname" placeholder="用户名" />
@@ -131,7 +135,6 @@
             }
         }
         function submitAll(){
-            console.log(toastr.options.positionClass);
             init();
             var urlStr;
             if(applyType == 'login'){
