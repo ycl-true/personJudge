@@ -8,11 +8,14 @@ import com.teacher.judge.demo.enums.Constant;
 import com.teacher.judge.demo.enums.ResultEnum;
 import com.teacher.judge.demo.exception.TeachException;
 import com.teacher.judge.demo.service.TokenService;
+import com.teacher.judge.demo.service.UserCourseService;
 import com.teacher.judge.demo.service.UserService;
 import com.teacher.judge.demo.util.ApplyUtil;
+import com.teacher.judge.demo.vo.TeacherCourseVo;
 import com.teacher.judge.demo.vo.UserVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +25,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -32,6 +36,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private UserCourseService userCourseService;
 
     // 用户登录
     @PostMapping(value = "/login")
@@ -96,13 +102,18 @@ public class UserController {
         return ApplyUtil.success();
     }
 
-
-    @GetMapping(value = "/getAllUser")
-    public User getAllUser() {
-        User user = userService.findById("4028818b6984fde3016984fdf36a0000");
-        return user;
+    // 获取学生所有上课的老师&课程
+    @GetMapping(value = "/teachers")
+    @ApiImplicitParams({
+        @ApiImplicitParam(paramType = "header", name = "token", value = "token值", required = true, dataType = "String"),
+        @ApiImplicitParam(paramType = "query", name = "userId", value = "用户id", required = true, dataType = "String")
+    })
+    public List<TeacherCourseVo> teachers(@RequestParam(value = "userId") String userId) {
+        List<TeacherCourseVo> list = userCourseService.getTeacherByUserId(userId);
+        return list;
     }
 
+    // 以下为测试接口
     @PostMapping(value = "/getUserVo")
     @ApiOperation(value = "这是一个post", notes = "post_notes")
     @ApiImplicitParam(paramType = "header", name = "token", value = "token", required = true, dataType = "String")
@@ -110,8 +121,5 @@ public class UserController {
         return ApplyUtil.success(userVo);
     }
 
-    public static void main(String[] args) {
-        //827ccb0eea8a706c4c34a16891f84e7b
-        System.out.println(DigestUtils.md5DigestAsHex("12345".getBytes()));
-    }
+
 }

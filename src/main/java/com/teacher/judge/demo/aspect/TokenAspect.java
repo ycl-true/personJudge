@@ -3,6 +3,7 @@ package com.teacher.judge.demo.aspect;
 import com.teacher.judge.demo.bean.Configs;
 import com.teacher.judge.demo.enums.ResultEnum;
 import com.teacher.judge.demo.exception.TeachException;
+import com.teacher.judge.demo.service.UserService;
 import com.teacher.judge.demo.service.impl.TokenServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -10,12 +11,15 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.CodeSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @Aspect
 @Component
@@ -23,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 public class TokenAspect {
     @Autowired
     private TokenServiceImpl tokenServiceImpl;
+    @Autowired
+    private UserService userService;
     @Autowired
     private Configs configs;
 
@@ -53,6 +59,9 @@ public class TokenAspect {
         } catch(Exception e) {
             throw new TeachException(ResultEnum.TOKEN_IS_EXPIRE);
         }
+        // 拦截用户id
+//        log.info("传入的userId={}",getNameAndValue(jp));
+
         // 类方法
         log.info("类方法={}",jp.getSignature().getDeclaringTypeName() + ":" + jp.getSignature().getName());
         // 参数
@@ -62,5 +71,19 @@ public class TokenAspect {
     @AfterReturning(pointcut = "log()", returning = "object")
     public void doAfter(Object object){
         log.info("返回的参数={}", object);
+    }
+
+    Map<String, Object> getNameAndValue(JoinPoint joinPoint) {
+        Map<String, Object> param = new HashMap<>();
+
+        Object[] paramValues = joinPoint.getArgs();
+        String[] paramNames = ((CodeSignature) joinPoint.getSignature()).getParameterNames();
+
+        for (int i = 0; i < paramNames.length; i++) {
+            log.info("参数列表：{}-》{}",paramNames[i],paramValues[i]);
+            param.put(paramNames[i], paramValues[i]);
+        }
+
+        return param;
     }
 }

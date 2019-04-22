@@ -10,4 +10,4 @@ logging:
 
 configs:
   # 过期时间（分钟）
-  timeOut: 3
+  timeOut: 30

@@ -24,11 +24,11 @@ public class User {
     @GeneratedValue(generator="idGenerator")
     @Column(length = 32)
     private String userId;
-    /**用户姓名*/
+    /**用户账号*/
     private String userName;
     /**密码*/
     private String password;
-    /**昵称*/
+    /**真实姓名*/
     private String nikeName;
     /**人员类型*/
     private String personType;
@@ -36,6 +36,11 @@ public class User {
     private String email;
     /**用户有效性*/
     private String valid;
-
+    /**电话*/
+    private String telphone;
+    /**一句话描述*/
+    private String description;
+    /**头像路径*/
+    private String imgUrl;
 
 }

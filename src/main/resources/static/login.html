@@ -32,7 +32,7 @@
             <div class="col-sm-7">
                 <div class="signin-info">
                     <div class="logopanel m-b">
-                        <h1>[ 教师评价系统 ]</h1>
+                        <h1>[ 高校教师教学评价 ]</h1>
                     </div>
                     <div class="m-b"></div>
                     <h4>欢迎使用 <strong>教师评价系统</strong></h4>
@@ -51,16 +51,16 @@
                 <div class="self">
                     <h4 class="no-margins" id="rgTitle">登录</h4>
                     <p class="m-t-md" id="rgMsg">登录到教师管理系统</p>
-                    <div class="radio radio-info radio-inline" id="radio_1" style="display: none">
-                        <input type="radio"  value="1" name="type" checked="">
+                    <div class="radio radio-info radio-inline" id="radio_div_1" style="display: none">
+                        <input type="radio"  value="1" id="radio_1" name="type" checked="">
                         <label for="radio_1"> 学生 </label>
                     </div>
-                    <div class="radio radio-success radio-inline" id="radio_2" style="display: none">
-                        <input type="radio"  value="0" name="type">
+                    <div class="radio radio-success radio-inline" id="radio_div_2" style="display: none">
+                        <input type="radio" id="radio_2" value="0" name="type">
                         <label for="radio_2"> 教师 </label>
                     </div>
-                    <div class="radio radio-danger radio-inline" id="radio_3" style="display: none">
-                        <input type="radio"  value="2" name="type">
+                    <div class="radio radio-danger radio-inline" id="radio_div_3" style="display: none">
+                        <input type="radio" id="radio_3" value="2" name="type">
                         <label for="radio_3"> 专家 </label>
                     </div>
                     <div class="form-group">
@@ -116,7 +116,7 @@
             applyType = type;
             if(type == 'login'){
                 $('#rgPassword').css('display','none');
-                $("div[id^='radio_']").css('display','none');
+                $("div[id^='radio_div_']").css('display','none');
                 $('#register').css('display','block');
                 $('#login').css('display','none');
                 $('#btn').text('登录');
@@ -125,7 +125,7 @@
                 toastr.options.positionClass = 'toast-middle-right';
             } else if(type == 'register'){
                 $('#rgPassword').css('display','');
-                $("div[id^='radio_']").css('display','');
+                $("div[id^='radio_div_']").css('display','');
                 $('#register').css('display','none');
                 $('#login').css('display','block');
                 $('#btn').text('注册');
