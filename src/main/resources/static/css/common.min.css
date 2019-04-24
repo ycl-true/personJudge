@@ -18,3 +18,14 @@
     top: 510px;
     right: 305px
 }
+/*解决页面有空余的问题*/
+#content-main2 {
+    height: calc(100% - 90px);
+    /*overflow: hidden*/
+    overflow: visible
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    #content-main2 {
+        -webkit-overflow-scrolling: touch;
+    }
+}

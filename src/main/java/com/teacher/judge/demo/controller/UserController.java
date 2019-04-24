@@ -108,9 +108,9 @@ public class UserController {
         @ApiImplicitParam(paramType = "header", name = "token", value = "token值", required = true, dataType = "String"),
         @ApiImplicitParam(paramType = "query", name = "userId", value = "用户id", required = true, dataType = "String")
     })
-    public List<TeacherCourseVo> teachers(@RequestParam(value = "userId") String userId) {
+    public Result teachers(@RequestParam(value = "userId") String userId) {
         List<TeacherCourseVo> list = userCourseService.getTeacherByUserId(userId);
-        return list;
+        return ApplyUtil.success(list);
     }
 
     // 以下为测试接口

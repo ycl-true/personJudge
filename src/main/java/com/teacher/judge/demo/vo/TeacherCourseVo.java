@@ -1,11 +1,13 @@
 package com.teacher.judge.demo.vo;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
  * 封装教师的基本信息+所教课程
  */
 @Data
+@ApiModel(value = "评价的老师信息", description = "评价老师的信息")
 public class TeacherCourseVo {
     /**用户昵称*/
     private String userName;
