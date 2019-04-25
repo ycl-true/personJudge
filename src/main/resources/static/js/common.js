@@ -1,10 +1,9 @@
-
-
 /**
  * ajax通用调用
  *
  * @param opt ajax选项
  * @param callback ajax回调函数
+ * @param returnFlag 自定义接受数据标志
  */
 var ajaxCommon = function(opt, callback, returnFlag) {
     // 默认ajax选项
@@ -77,3 +76,8 @@ var ajaxCommon = function(opt, callback, returnFlag) {
         }
     });
 };
+
+function getUserId(){
+    var result = eval('(' + window.localStorage.getItem("User") + ')');
+    return result.userId;
+}

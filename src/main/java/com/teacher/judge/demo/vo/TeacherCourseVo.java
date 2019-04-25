@@ -23,4 +23,6 @@ public class TeacherCourseVo {
     private String imgUrl;
     /**该老师所教课程*/
     private String courseName;
+    /**标志位：是否已经评价了该老师 true 为已评价*/
+    public Boolean judgeFlag;
 }

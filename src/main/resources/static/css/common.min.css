@@ -29,3 +29,20 @@
         -webkit-overflow-scrolling: touch;
     }
 }
+/*解决教师评价页面单元超出问题*/
+.ibox2 {
+    clear: both;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding: 0;
+}
+
+.contact-box2 {
+    background-color: #fff;
+    border: 1px solid #e7eaec;
+    padding: 20px 20px 0px 20px;
+    margin-bottom: 20px;
+}
+.contact-box2 a{
+    color: inherit;
+}
