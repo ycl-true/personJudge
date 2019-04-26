@@ -21,8 +21,12 @@ public class TeacherCourseVo {
     private String description;
     /**头像路径*/
     private String imgUrl;
+    /**教师id*/
+    private String teacherId;
     /**该老师所教课程*/
     private String courseName;
+    /**课程id*/
+    private String courseId;
     /**标志位：是否已经评价了该老师 true 为已评价*/
     public Boolean judgeFlag;
 }

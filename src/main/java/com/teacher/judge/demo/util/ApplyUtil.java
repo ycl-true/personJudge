@@ -1,11 +1,16 @@
 package com.teacher.judge.demo.util;
 
 import com.teacher.judge.demo.bean.Result;
+import com.teacher.judge.demo.bo.CommentInfo;
 import com.teacher.judge.demo.enums.Constant;
 import com.teacher.judge.demo.enums.ResultEnum;
 import com.teacher.judge.demo.exception.TeachException;
+import com.teacher.judge.demo.vo.CommentInfoVo;
+import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ApplyUtil {
 
@@ -26,5 +31,15 @@ public class ApplyUtil {
         } else {
             throw new TeachException(ResultEnum.TOKEN_NOT_EXIST);
         }
+    }
+
+    public static List<CommentInfoVo> commentInfoList2VoList(List<CommentInfo> infoList){
+        List<CommentInfoVo> voList = new ArrayList<>();
+        for(CommentInfo info : infoList){
+            CommentInfoVo vo = new CommentInfoVo();
+            BeanUtils.copyProperties(info, vo);
+            voList.add(vo);
+        }
+        return voList;
     }
 }

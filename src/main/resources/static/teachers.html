@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html>
-
-
-<!-- Mirrored from www.zi-han.net/theme/hplus/contacts.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:21 GMT -->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,7 +54,7 @@
     <script src="js/jquery.cookie.js"></script>
     <script>
         // 初始化页面
-        function initHtml(obj){
+        function initHtml(obj, i){
             var html = "";
             html += '<div class="col-sm-4">' +
                         '<div class="contact-box2">' +
@@ -81,7 +78,7 @@
                                     if(!!obj.judgeFlag){
                                         html +='<a class="btn btn-danger btn-rounded btn-outline" href="javascript:void(0)">已评价</a>'
                                     } else {
-                                        html +='<a class="btn btn-danger btn-rounded btn-outline" href="buttons.html#">待评价</a>'
+                                        html +='<a class="btn btn-danger btn-rounded btn-outline" href="javascript:void(0)" onclick="saveParam('+ i +');return false;">待评价</a>'
                                     }
                                      html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                                             '<a class="btn btn-success btn-rounded" style="color:#FFF" href="buttons.html#">留言</a>' +
@@ -94,6 +91,7 @@
                         '</div>';
             $(".row").append(html);
         }
+        var list = new Array();
         $(document).ready(function () {
             ajaxCommon({
                 url: 'user/teachers?userId=' + getUserId(),
@@ -102,7 +100,11 @@
                 if(obj.code == 200){
                     var data = obj.data;
                     for(var i in data){
-                        initHtml(data[i]);
+                        initHtml(data[i], i);
+                        var value = new Object();
+                        value.teacherId = data[i].teacherId;
+                        value.courseId = data[i].courseId;
+                        list.push(value);
                     }
                     // 添加移入特效
                     $(".contact-box2").each(function () {
@@ -110,8 +112,14 @@
                     })
                 }
             }, false);
-
         });
+        loginfo("包装好的\n");
+        loginfo(list);
+        function saveParam(i){
+            // 把对应参数保存到本地缓存中
+            window.localStorage.setItem("TeacherTemp",JSON.stringify(list[i]));
+            window.location.href = "judge.html";
+        }
     </script>
 </body>
 </html>

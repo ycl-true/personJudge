@@ -1,3 +1,9 @@
+var debug = true;
+function loginfo(str){
+    if(debug){
+        console.log(str);
+    }
+}
 /**
  * ajax通用调用
  *
@@ -19,7 +25,7 @@ var ajaxCommon = function(opt, callback, returnFlag) {
     // 获取ajax选项
     $.extend(options, opt);
 
-    console.log(options.url+"\n"+options.data);
+    loginfo(options.url+"\n"+options.data);
 
     $.ajax({
         url: options.url,
@@ -34,7 +40,7 @@ var ajaxCommon = function(opt, callback, returnFlag) {
         },
         complete: function(jqXHR, textStatus) {
             var result = eval('(' + jqXHR.responseText + ')');
-            console.log(result);
+            loginfo(result);
             // 获取ajax返回的信息
             if(textStatus == "success"){
                 // 无需通用跳转，自定义处理

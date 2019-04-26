@@ -38,6 +38,8 @@ public class UserCourseServiceImpl implements UserCourseService {
             BeanUtils.copyProperties(userService.findById(uc.getTeacherId()), vo);
             vo.setCourseName(courseService.getAllCourse().get(uc.getCourseId()));
             vo.setJudgeFlag(judgeService.isJudged(userId, uc.getCourseId(), uc.getTeacherId()));
+            vo.setCourseId(uc.getCourseId());
+            vo.setTeacherId(uc.getTeacherId());
             resultList.add(vo);
         }
         return resultList;
