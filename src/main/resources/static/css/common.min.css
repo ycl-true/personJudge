@@ -9,6 +9,7 @@
     border-radius: 3px;
     padding: 30px
 }
+/*提示插件定位*/
 .toast-middle-right {
     top: 430px;
     right: 305px
@@ -17,6 +18,19 @@
 .toast-middle2-right {
     top: 510px;
     right: 305px
+}
+
+.toast-middle-question0 {
+    top: 170px;
+    right: 180px
+}
+.toast-middle-question1 {
+    top: 250px;
+    right: 180px
+}
+.toast-middle-question2 {
+    top: 170px;
+    right: 180px
 }
 /*解决页面有空余的问题*/
 #content-main2 {

@@ -93,23 +93,41 @@
         }
         var list = new Array();
         $(document).ready(function () {
+            // 先删掉暂存的信息
+            window.localStorage.removeItem("TeacherTemp");
             ajaxCommon({
                 url: 'user/teachers?userId=' + getUserId(),
+                // url: 'user/teachers?userId=' + '402848816a6450ba016a645166430001',
                 type: 'GET'
             }, function(obj) {
                 if(obj.code == 200){
                     var data = obj.data;
-                    for(var i in data){
-                        initHtml(data[i], i);
-                        var value = new Object();
-                        value.teacherId = data[i].teacherId;
-                        value.courseId = data[i].courseId;
-                        list.push(value);
+                    //无数据则显示空白样式
+                    if(data.length == 0){
+                        var blank = '' +
+                            '<div class="col-sm-12">' +
+                            '  <div class="middle-box text-center animated fadeInRightBig">' +
+                            '     <h3 class="font-bold">无待评价的课程</h3>' +
+                            '     <div class="error-desc">' +
+                            '您可以联系管理员添加课程' +
+                            // '     <br/><a href="#" class="btn btn-primary m-t">打开主页</a>' +
+                            '     </div>' +
+                            '  </div>' +
+                            '</div>';
+                        $(".row").append(blank);
+                    } else {
+                        for(var i in data){
+                            initHtml(data[i], i);
+                            var value = new Object();
+                            value.teacherId = data[i].teacherId;
+                            value.courseId = data[i].courseId;
+                            list.push(value);
+                        }
+                        // 添加移入特效
+                        $(".contact-box2").each(function () {
+                            animationHover(this, "pulse")
+                        })
                     }
-                    // 添加移入特效
-                    $(".contact-box2").each(function () {
-                        animationHover(this, "pulse")
-                    })
                 }
             }, false);
         });

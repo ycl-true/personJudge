@@ -74,7 +74,7 @@ public class UserController {
         }
         // 校验是否存在用户
         User user = userService.findByUserName(register.getUserName());
-        if (user != null) {
+        if (user != null || user.getValid() != Constant.YES.getValue()) {
             // 存在代表已经注册过了
             throw new TeachException(ResultEnum.USER_IS_EXIST);
         } else {

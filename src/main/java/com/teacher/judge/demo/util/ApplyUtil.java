@@ -2,6 +2,7 @@ package com.teacher.judge.demo.util;
 
 import com.teacher.judge.demo.bean.Result;
 import com.teacher.judge.demo.bo.CommentInfo;
+import com.teacher.judge.demo.bo.User;
 import com.teacher.judge.demo.enums.Constant;
 import com.teacher.judge.demo.enums.ResultEnum;
 import com.teacher.judge.demo.exception.TeachException;
@@ -41,5 +42,13 @@ public class ApplyUtil {
             voList.add(vo);
         }
         return voList;
+    }
+
+    public static String getJudgeType(User judgePerson, User teacher){
+        if(judgePerson.getUserId().equals(teacher.getUserId())){
+            return Constant.TS.getValue();
+        } else {
+            return judgePerson.getPersonType() + "0";
+        }
     }
 }

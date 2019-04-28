@@ -44,4 +44,15 @@ public class UserCourseServiceImpl implements UserCourseService {
         }
         return resultList;
     }
+
+    // 判断是否有权限
+    @Override
+    public boolean allowJudge(String userId, String courseId, String teacherId) {
+        UserCourse userCourse = userCourseDao.findByUserIdAndCourseIdAndTeacherId(userId, courseId, teacherId);
+        if(userCourse == null){
+            return false;
+        }
+        return true;
+    }
+
 }

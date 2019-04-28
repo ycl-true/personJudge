@@ -2,21 +2,42 @@ package com.teacher.judge.demo.service.impl;
 
 import com.teacher.judge.demo.bo.User;
 import com.teacher.judge.demo.dao.UserDao;
+import com.teacher.judge.demo.enums.Constant;
+import com.teacher.judge.demo.enums.ResultEnum;
+import com.teacher.judge.demo.exception.TeachException;
 import com.teacher.judge.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.transaction.Transactional;
+
 @Service
 @Slf4j
+@Transactional
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
     @Override
     public User findById(String userId) {
-        return userDao.getOne(userId);
+        User user = userDao.getOne(userId);
+        if(Constant.YES.getValue().equals(user.getValid())){
+            return user;
+        } else {
+            throw new TeachException(ResultEnum.USER_NOT_EXIST);
+        }
+    }
+
+    @Override
+    public User findById(String userId, String valid) {
+        User user = userDao.getOne(userId);
+        if(valid.equals(user.getValid())){
+            return user;
+        } else {
+            throw null;
+        }
     }
 
     @Override
@@ -26,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUserNameAndAndPassword(String name, String pass) {
-        return userDao.findByUserNameAndAndPassword(name, DigestUtils.md5DigestAsHex(pass.getBytes()));
+        return userDao.findByUserNameAndAndPasswordAndValid(name, DigestUtils.md5DigestAsHex(pass.getBytes()), Constant.YES.getValue());
     }
 
     @Override

@@ -6,4 +6,6 @@ import lombok.Data;
 public class CommentInfoVo {
     private String commentId;
     private String commentName;
+    // 分数
+    private Integer scope;
 }

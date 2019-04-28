@@ -4,6 +4,23 @@ function loginfo(str){
         console.log(str);
     }
 }
+if(typeof toastr != "undefined" ? true : false){
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "progressBar": true,
+        "positionClass": "toast-middle-right",
+        "showDuration": "400",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+}
+
 /**
  * ajax通用调用
  *

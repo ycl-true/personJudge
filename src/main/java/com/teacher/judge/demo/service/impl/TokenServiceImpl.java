@@ -37,9 +37,6 @@ public class TokenServiceImpl implements TokenService {
     public boolean validToken(String tokenId) throws Exception{
         Token tokenObj = tokenDao.getOne(tokenId);
         long currentTime = System.currentTimeMillis();
-        log.info("token有效性={}",tokenObj.getValid());
-        log.info("当前时间={}", new Date());
-        log.info("最大时间范围<{}", new Date(tokenObj.getLoginDate().getTime() + configs.getTimeOut() * 60 * 1000));
         if (tokenObj != null
                 && Constant.YES.getValue().equals(tokenObj.getValid())
                 && tokenObj.getLoginDate().getTime() + configs.getTimeOut() * 60 * 1000 > currentTime) {
