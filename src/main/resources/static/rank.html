@@ -1,15 +1,93 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-</head>
-<body>
-这是主页
-<script>
-    function forword(url){
-        window.location.href = url;
-    }
-</script>
-<a href="javascript:void(0)"onclick="forword('teachers.html');return false;">待评价教师</a>
 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教师评价系统</title>
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="css/common.min.css" rel="stylesheet">
+    <link href="css/plugins/chosen/chosen.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="ibox float-e-margins">
+                        <!--<div class="ibox-title">-->
+                            <!--<h5>排名展示</h5>-->
+                        <!--</div>-->
+                        <div class="ibox-content">
+                            1111
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="ibox float-e-margins">
+                        <!--<div class="ibox-title">-->
+                            <!--<h5>排名选项</h5>-->
+                        <!--</div>-->
+                        <div class="ibox-content">
+                            <h3>请选择课程</h3>
+                            <div class="form-group">
+                                <!--<label class="font-noraml">基本示例</label>-->
+                                <div class="input-group">
+                                    <select data-placeholder="选择需要排名的课程.." name="xxxx" class="chosen-select" id="sele" style="width:320px;" tabindex="2">
+                                        <option value="">选择需要排名的课程..</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <h3>请滑动选择所占比例</h3>
+                            <div class="form-group">
+                                <select id="xx">
+                                    <option value="1">111</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="js/common.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+    <script>
+        var config = {
+            ".chosen-select": {
+                no_results_text: "没有相关课程:",
+                // 全模糊匹配
+                search_contains: true
+            }
+        };
+        // 初始化属性
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+        $(document).ready(function () {
+            ajaxCommon({
+                url: 'course/courseMap',
+                type: 'GET'
+            }, function(obj) {
+                if(obj.code == 200){
+                    for(var key in obj.data){
+                        $("#sele").append('<option value="'+key+'" hassubinfo="true">'+obj.data[key]+'</option>');
+                    }
+                    $("#sele").trigger("chosen:updated");
+                }
+            }, false);
+            $("#sele").chosen().change(function(){
+                alert($(this).children('option:selected').val());
+            })
+        });
+    </script>
 </body>
 </html>
