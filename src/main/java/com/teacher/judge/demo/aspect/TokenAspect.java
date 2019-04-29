@@ -42,6 +42,8 @@ public class TokenAspect {
     public void doBefore(JoinPoint jp){
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = sra.getRequest();
+        log.info("访问的类方法={}",jp.getSignature().getDeclaringTypeName() + ":" + jp.getSignature().getName());
+        log.info("访问参数={}", jp.getArgs().toString());
         String token = request.getHeader("token");
         if(null == token || token.isEmpty()){
             throw new TeachException(ResultEnum.TOKEN_NOT_EXIST);
@@ -62,10 +64,7 @@ public class TokenAspect {
         // 拦截用户id
 //        log.info("传入的userId={}",getNameAndValue(jp));
 
-        // 类方法
-        log.info("类方法={}",jp.getSignature().getDeclaringTypeName() + ":" + jp.getSignature().getName());
-        // 参数
-        log.info("参数={}", jp.getArgs().toString());
+
     }
 
     @AfterReturning(pointcut = "log()", returning = "object")

@@ -90,9 +90,32 @@
 
                             <h1>完成</h1>
                             <fieldset>
-                                <h2>条款</h2>
-                                <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required">
-                                <label for="acceptTerms">我同意注册条款</label>
+                                <h2>提交须知</h2>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="form-group">
+                                            <label>1. 评教人应秉着公平公正的原则进行评教。</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>2. 评教不违规进行评教。</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>3. 违反规定恶意评教，有权不通知用户而直接删除。</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>4. 评教分数最终解释权归系统所有。</label>
+                                        </div>
+                                        <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required">
+                                        <label for="acceptTerms">我理解并同意须知</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="text-center">
+                                            <div style="margin-top: 20px">
+                                                <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </fieldset>
                         </form>
                     </div>
@@ -148,7 +171,7 @@
         }
         $(document).ready(function () {
             // 判断是否有教师列表留下的信息
-            var temp = eval('(' + window.localStorage.getItem("TeacherTemp") + ')')
+            var temp = eval('(' + window.localStorage.getItem("TeacherTemp") + ')');
             if(temp == null || !temp.courseId || !temp.teacherId){
                 // 无相关信息重新登录
                 window.parent.location.href = "login.html";
@@ -199,7 +222,7 @@
             $("#form").steps({
                 bodyTag: "fieldset",
                 labels: {
-                    finish: "提交",
+                    finish: "提交评价",
                     next: "下一步",
                     previous: "上一步"
                 },
@@ -253,7 +276,7 @@
                         data: JSON.stringify(allObj)
                     }, function(obj) {
                         if(obj.code == 200){
-                            alert("提交成功");
+                            window.location.href = "teachers.html";
                         }
                     }, false);
                 }

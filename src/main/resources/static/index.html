@@ -27,71 +27,30 @@
                     <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
                         <i class="fa fa-reorder"></i>
                     </button>
-                    <a href="#" class="navbar-brand">Hplus</a>
+                    <a href="#" class="navbar-brand">教师评价系统</a>
                 </div>
                 <div class="navbar-collapse collapse" id="navbar">
-                    <ul class="nav navbar-nav">
-                        <li class="active">
-                            <a aria-expanded="false" role="button" href="index-2.html"> 返回首页</a>
-                        </li>
-                        <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> 菜单 <span class="caret"></span></a>
-                            <ul role="menu" class="dropdown-menu">
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> 菜单 <span class="caret"></span></a>
-                            <ul role="menu" class="dropdown-menu">
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">M菜单列表</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> 菜单 <span class="caret"></span></a>
-                            <ul role="menu" class="dropdown-menu">
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> 菜单 <span class="caret"></span></a>
-                            <ul role="menu" class="dropdown-menu">
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                                <li><a href="#">菜单列表</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                    </ul>
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <a href="login.html">
+                            <a href="javascript:void(0)" id="menu_loginOut">
                                 <i class="fa fa-sign-out"></i> 退出
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="javascript:void(0)" id="menu_rank" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bar-chart"></i> 排名
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a aria-expanded="false" role="button" href="javascript:void(0)" id="menu_judge" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-check-square"></i> 评教
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a aria-expanded="false" role="button" href="javascript:void(0)" id="menu_own">
+                                <i class="fa fa-user"></i> 我的信息
                             </a>
                         </li>
                     </ul>
@@ -99,7 +58,7 @@
             </nav>
         </div>
         <div class="row J_mainContent" id="content-main2">
-            <iframe class="J_iframe" name="iframe" width="100%" height="100%" src="teachers.html" frameborder="0" seamless="" style="display: inline;">
+            <iframe class="J_iframe" name="iframe" width="100%" height="100%" src="rank.html" frameborder="0" seamless="" style="display: inline;">
             </iframe>
         </div>
         <div class="footer">
@@ -115,6 +74,35 @@
 
 <script src="js/jquery.min.js?v=2.1.4"></script>
 <script src="js/bootstrap.min.js?v=3.3.6"></script>
-<!--<script src="js/content.min.js?v=1.0.0"></script>-->
+<script src="js/common.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script>
+    function goTo(url){
+        $("iframe[name='iframe']").attr("src",url);
+    }
+    $(document).ready(function () {
+        $("#menu_loginOut").click(function(){
+            ajaxCommon({
+                url: 'user/loginOut',
+                type: 'DELETE'
+            }, function(obj) {
+                if(obj.code == 200){
+                    // 删除local缓存
+                    window.localStorage.clear();
+                    window.location.href = "login.html";
+                }
+            }, false);
+        });
+        $("#menu_rank").click(function(){
+            goTo("rank.html");
+        });
+        $("#menu_judge").click(function(){
+            goTo("teachers.html");
+        });
+        $("#menu_own").click(function(){
+            goTo("user.html");
+        });
+    });
+</script>
 </body>
 </html>
