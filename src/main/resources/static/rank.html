@@ -13,9 +13,10 @@
     <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
     <link href="css/common.min.css" rel="stylesheet">
     <link href="css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="css/plugins/nouslider/nouislider.min.css" rel="stylesheet">
 </head>
 <body class="gray-bg">
-    <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="wrapper wrapper-content" style="padding-top: 30px;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
@@ -30,11 +31,11 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="ibox float-e-margins">
-                        <!--<div class="ibox-title">-->
-                            <!--<h5>排名选项</h5>-->
-                        <!--</div>-->
-                        <div class="ibox-content">
-                            <h3>请选择课程</h3>
+                        <div class="ibox-title">
+                            <h5>查询选项</h5>
+                        </div>
+                        <div class="ibox-content" id="ibox-content">
+                            <h3>1.请选择课程</h3>
                             <div class="form-group">
                                 <!--<label class="font-noraml">基本示例</label>-->
                                 <div class="input-group">
@@ -43,11 +44,60 @@
                                     </select>
                                 </div>
                             </div>
-                            <h3>请滑动选择所占比例</h3>
+                            <h3>2.请滑动选择评价所占比例</h3>
                             <div class="form-group">
-                                <select id="xx">
-                                    <option value="1">111</option>
-                                </select>
+                                <div id="slider2" class="slider_common"></div>
+                                <table class="table" id="content-3">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            课前占比:<small id="skip2-value-1" class="label label-primary c-5-color">1</small>
+                                        </td>
+                                        <td>
+                                            课堂占比:<small id="skip2-value-2" class="label label-primary c-6-color">1</small>
+                                        </td>
+                                        <td>
+                                            课后占比:<small id="skip2-value-3" class="label label-primary c-7-color">1</small>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <h3>3.请滑动选择人群所占比例</h3>
+                            <div class="form-group">
+                                <div id="slider" class="slider_common"></div>
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            学生评教占比:<small id="skip-value-1" class="label label-primary c-1-color"></small>
+                                        </td>
+                                        <td>
+                                            教师自评占比:<small id="skip-value-2" class="label label-primary c-2-color"></small>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            教师评教占比:<small id="skip-value-3" class="label label-primary c-3-color"></small>
+                                        </td>
+                                        <td>
+                                            专家评教占比:<small id="skip-value-4" class="label label-primary c-4-color"></small>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="form-group" id="padding-reset">
+                                <table class="table" id="content-1">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="width: 200px">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger m-r-sm" onclick="submitQuery();">查询</button>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -60,6 +110,8 @@
     <script src="js/common.js"></script>
     <script src="js/jquery.cookie.js"></script>
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
+    <script src="js/plugins/nouislider/nouislider.js"></script>
+    <script src="js/plugins/nouislider/wNumb.js"></script>
     <script>
         var config = {
             ".chosen-select": {
@@ -68,11 +120,37 @@
                 search_contains: true
             }
         };
-        // 初始化属性
+        // 初始化选择项属性
         for (var selector in config) {
             $(selector).chosen(config[selector]);
         }
+        function calculatAndSet(values, handle, skipValues){
+            var left = 0;var right = 0;
+            if(handle == 0){
+                left = values[handle] - 0;
+            } else {
+                left = values[handle]  - values[handle - 1] ;
+            }
+            if(handle == (values.length - 1)){
+                right = 100 - values[handle];
+            } else {
+                right = values[handle + 1] - values[handle];
+            }
+            skipValues[handle + 1].innerHTML = right+"%";
+            skipValues[handle].innerHTML = left+"%";
+        }
+        function submitQuery(){
+            loginfo("开始进行排名查询");
+
+        }
         $(document).ready(function () {
+            //设置表格元素属性
+            $(".table td").css("border-top","0px");
+            $("#content-3 td").css("padding","8px 0px");
+            $("#content-1 td").removeAttr("style");
+            $("#content-1").css("margin-bottom","0px");
+            $("#ibox-content").css("padding","15px 20px 10px 20px");
+            $("#padding-reset").css("margin-bottom", "0px");
             ajaxCommon({
                 url: 'course/courseMap',
                 type: 'GET'
@@ -86,7 +164,58 @@
             }, false);
             $("#sele").chosen().change(function(){
                 alert($(this).children('option:selected').val());
-            })
+            });
+            // --------------以下slider插件只能用原生js或者$()[0]------------------
+            var slider =document.getElementById('slider');
+            var slider2 = document.getElementById('slider2');
+            noUiSlider.create(slider, {
+                start: [25, 50, 75],
+                step: 1,
+                tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0}), wNumb({decimals: 0})],
+                connect: [ true, true, true, true],
+                range: {
+                    'min': [0],
+                    'max': [100]
+                }
+            });
+            noUiSlider.create(slider2, {
+                start: [33, 66],
+                step: 1,
+                tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
+                connect: [ true, true, true],
+                range: {
+                    'min': [0],
+                    'max': [100]
+                }
+            });
+            var connect = slider.querySelectorAll('.noUi-connect');
+            var connect2 = slider2.querySelectorAll('.noUi-connect');
+            var classes = ['c-1-color', 'c-2-color', 'c-3-color', 'c-4-color'];
+            for (var i = 0; i < connect.length; i++) {
+                connect[i].classList.add(classes[i]);
+            }
+            var classes2 = ['c-5-color', 'c-6-color', 'c-7-color'];
+            for (var i = 0; i < connect2.length; i++) {
+                connect2[i].classList.add(classes2[i]);
+            }
+            var skipValues_1 = [
+                document.getElementById('skip-value-1'),
+                document.getElementById('skip-value-2'),
+                document.getElementById('skip-value-3'),
+                document.getElementById('skip-value-4')
+            ];
+            var skipValues_2 = [
+                document.getElementById('skip2-value-1'),
+                document.getElementById('skip2-value-2'),
+                document.getElementById('skip2-value-3')
+            ];
+            // 设置事件
+            slider.noUiSlider.on('update.one', function (values, handle, unencoded, positions) {
+                calculatAndSet(values, handle, skipValues_1);
+            });
+            slider2.noUiSlider.on('update.one', function (values, handle, unencoded, positions) {
+                calculatAndSet(values, handle, skipValues_2);
+            });
         });
     </script>
 </body>

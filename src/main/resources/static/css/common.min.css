@@ -60,3 +60,26 @@
 .contact-box2 a{
     color: inherit;
 }
+/*排名页面css*/
+.slider_common {
+    width: 250px;
+    margin: 20px auto;
+}
+.c-1-color { background: #9fe6b8 !important; }
+.c-2-color { background: #67e0e3 !important; }
+.c-3-color { background: #32c5e9 !important;}
+.c-4-color { background: #37a2da !important;}
+/*.c-5-color { background: #96BFFF !important;}*/
+/*.c-6-color { background: #9d96f5 !important;}*/
+/*.c-7-color { background: #8378EA !important;}*/
+
+.c-5-color { background: #FFDB5C !important;}
+.c-6-color { background: #ff9f7f !important;}
+.c-7-color { background: #E690D1 !important;}
+/*设置松开滑块不提示*/
+.noUi-tooltip {
+    display: none !important;
+}
+.noUi-active .noUi-tooltip {
+    display: block !important;
+}
