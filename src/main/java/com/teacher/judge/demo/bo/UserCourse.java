@@ -24,4 +24,5 @@ public class UserCourse {
     private String userId;
     private String courseId;
     private String teacherId;
+
 }

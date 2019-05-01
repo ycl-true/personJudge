@@ -94,7 +94,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-danger m-r-sm" onclick="submitQuery();">查询</button>
+                                            <button type="button" class="btn btn-danger m-r-sm" id="submit" onclick="submitQuery();">查询</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -112,6 +112,7 @@
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
     <script src="js/plugins/nouislider/nouislider.js"></script>
     <script src="js/plugins/nouislider/wNumb.js"></script>
+    <script src="js/plugins/layer/layer.min.js"></script>
     <script>
         var config = {
             ".chosen-select": {
@@ -139,9 +140,40 @@
             skipValues[handle + 1].innerHTML = right+"%";
             skipValues[handle].innerHTML = left+"%";
         }
+        function getNum(obj){
+            return Number($("#"+obj).text().split("%")[0]);
+        }
         function submitQuery(){
             loginfo("开始进行排名查询");
+            var selected = $("#sele").children('option:selected').val();
+            // 验证
+            if(!selected){
+                layer.tips('别漏选课程哟~', $("#submit"), {
+                    tips: [4, '#3595CC'],
+                    time: 4e3
+                });
+                return false;
+            }
+            var params = {
+              courseId: selected,
+              categoryProp: {
+                  A: getNum("skip2-value-1"),B: getNum("skip2-value-2"), C:getNum("skip2-value-3")
+              },
+              judgeProp: {
+                  ST: getNum("skip-value-1"),TT:getNum("skip-value-3"),PT:getNum("skip-value-4"),TS:getNum("skip-value-2")
+              }
+            };
+            loginfo(params);
+            ajaxCommon({
+                url: 'query/rank',
+                data: JSON.stringify(params)
+            }, function(obj) {
+                if(obj.code == 200){
+                    var data = obj.data;
 
+                    alert("成功");
+                }
+            }, false);
         }
         $(document).ready(function () {
             //设置表格元素属性
@@ -162,9 +194,6 @@
                     $("#sele").trigger("chosen:updated");
                 }
             }, false);
-            $("#sele").chosen().change(function(){
-                alert($(this).children('option:selected').val());
-            });
             // --------------以下slider插件只能用原生js或者$()[0]------------------
             var slider =document.getElementById('slider');
             var slider2 = document.getElementById('slider2');

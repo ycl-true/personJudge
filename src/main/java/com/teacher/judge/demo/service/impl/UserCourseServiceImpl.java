@@ -55,4 +55,10 @@ public class UserCourseServiceImpl implements UserCourseService {
         return true;
     }
 
+    // 查找课程对应的所有教师id
+    @Override
+    public List<Object> getTeachersByCourseId(String courseId){
+        List<Object> teacherIdList = userCourseDao.findTeachersByCourseId(courseId);
+        return teacherIdList;
+    }
 }
