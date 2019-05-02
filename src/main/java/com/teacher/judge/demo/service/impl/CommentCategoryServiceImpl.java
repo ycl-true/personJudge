@@ -1,9 +1,9 @@
 package com.teacher.judge.demo.service.impl;
 
 import com.teacher.judge.demo.bo.CommentCategory;
-import com.teacher.judge.demo.bo.CommentInfo;
 import com.teacher.judge.demo.dao.CommentCategoryDao;
 import com.teacher.judge.demo.dao.CommentInfoDao;
+import com.teacher.judge.demo.enums.Constant;
 import com.teacher.judge.demo.service.CommentCategoryService;
 import com.teacher.judge.demo.util.ApplyUtil;
 import com.teacher.judge.demo.vo.CommentCategoryVo;
@@ -47,5 +47,10 @@ public class CommentCategoryServiceImpl implements CommentCategoryService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public int getTotalQuestionScope(){
+        return commentInfoDao.countAllByValid(Constant.YES.getValue());
     }
 }

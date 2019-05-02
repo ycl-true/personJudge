@@ -11,6 +11,7 @@ import com.teacher.judge.demo.dao.JudgeDao;
 import com.teacher.judge.demo.dao.JudgeInfoDao;
 import com.teacher.judge.demo.dto.JudgeDto;
 import com.teacher.judge.demo.enums.Constant;
+import com.teacher.judge.demo.service.CommentCategoryService;
 import com.teacher.judge.demo.service.JudgeService;
 import com.teacher.judge.demo.service.UserCourseService;
 import com.teacher.judge.demo.service.UserService;
@@ -39,6 +40,8 @@ public class JudgeServiceImpl implements JudgeService {
     private UserService userService;
     @Autowired
     private UserCourseService userCourseService;
+    @Autowired
+    private CommentCategoryService commentCategoryService;
 
     @Override
     public boolean isJudged(String userId, String courseId, String teacherId) {
@@ -89,11 +92,11 @@ public class JudgeServiceImpl implements JudgeService {
         for (Object obj: teachersIdList) {
             String teacherId = obj.toString();
             String teacherName = userService.findById(teacherId).getNikeName();
-            log.info("姓名={}，id={}",teacherName,teacherId);
             List<JudgeDto> dtoList = getJudgeDtoByTeacherIdAndCourseId(teacherId, rankParam);
             double scope = 0;
             if (dtoList == null){
-                // 此课还没有用户评价
+                // 此课还没有用户评价,返回-1
+                scope = -1;
             } else {
                 //拿到所有人对该教师的评价分数后，计算按人群比例后的最终rank分数
                 scope = getTeacherTotalScope(dtoList, rankParam);
@@ -104,7 +107,7 @@ public class JudgeServiceImpl implements JudgeService {
         return rankVoList;
     }
 
-    // 填充内容->一个JudgeDto代表一个用户评价了此老师教的此课
+    // 填充内容,返回所有人对此老师课程的评价对象（一个JudgeDto代表一个用户评价了此老师教的此课）
     public List<JudgeDto> getJudgeDtoByTeacherIdAndCourseId(String teacherId, RankParam rankParam){
         List<JudgeDto> dtoList = judgeDao.findByTeachIdAndCourseIdAndValid(teacherId, rankParam.getCourseId(), Constant.YES.getValue());
         if(dtoList != null && !dtoList.isEmpty()){
@@ -171,18 +174,29 @@ public class JudgeServiceImpl implements JudgeService {
         }
         // 计算方式
         // 每个群体的平均分*对应比例加起来就是最终得分
+        // 如果某个群体没评价，则用总分的80%假的分数代替
         double finalScope = 0;
+        double temp = commentCategoryService.getTotalQuestionScope() * 10 * 0.8;
+        log.info("题干假的所得分={}",temp);
         if (typeCount[0] != 0) {
             finalScope += MathUtil.div(scope[0] * judgeProp.getST(), typeCount[0]);
+        } else {
+            finalScope += temp * judgeProp.getST();
         }
         if (typeCount[1] != 0) {
             finalScope += MathUtil.div(scope[1] * judgeProp.getTT(), typeCount[1]);
+        } else {
+            finalScope += temp * judgeProp.getTT();
         }
         if (typeCount[2] != 0) {
             finalScope += MathUtil.div(scope[2] * judgeProp.getPT(), typeCount[2]);
+        } else {
+            finalScope += temp * judgeProp.getPT();
         }
         if (typeCount[3] != 0) {
             finalScope += MathUtil.div(scope[3] * judgeProp.getTS(), typeCount[3]);
+        } else {
+            finalScope += temp * judgeProp.getTS();
         }
         return MathUtil.div(finalScope, 100);
     }

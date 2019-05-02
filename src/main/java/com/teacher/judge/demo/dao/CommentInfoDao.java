@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CommentInfoDao extends JpaRepository<CommentInfo, String> {
     List<CommentInfo> findAllByParentType(String parentType);
+    int countAllByValid(String valid);
 }

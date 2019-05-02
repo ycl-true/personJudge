@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CommentCategoryService {
     List<CommentCategoryVo> getAllCommon();
+    int getTotalQuestionScope();
 }
