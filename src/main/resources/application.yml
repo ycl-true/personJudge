@@ -11,3 +11,5 @@ logging:
 configs:
   # 过期时间（分钟）
   timeOut: 30
+  # 某个群体没评价时，预估好评率
+  proportion: 0.8

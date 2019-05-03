@@ -121,6 +121,11 @@
             }
         }
         function submitAll(){
+            // 判断浏览器支不支持localStorage
+            if(!localStorageSupport()){
+                alert("请换chrome浏览器进行浏览~");
+                return false;
+            }
             init();
             var urlStr;
             if(applyType == 'login'){

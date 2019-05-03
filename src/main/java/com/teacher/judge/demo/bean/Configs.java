@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component;
 @Data
 public class Configs {
     private Integer timeOut;
-
+    private Double proportion;
 }

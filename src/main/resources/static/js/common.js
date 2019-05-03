@@ -4,6 +4,9 @@ function loginfo(str){
         console.log(str);
     }
 }
+function localStorageSupport() {
+    return "localStorage" in window && null !== window.localStorage
+}
 if(typeof toastr != "undefined" ? true : false){
     toastr.options = {
         "closeButton": true,

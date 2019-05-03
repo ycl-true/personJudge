@@ -1,9 +1,6 @@
 package com.teacher.judge.demo.service.impl;
 
-import com.teacher.judge.demo.bean.JudgeMaster;
-import com.teacher.judge.demo.bean.Judged;
-import com.teacher.judge.demo.bean.JudgedInfo;
-import com.teacher.judge.demo.bean.RankParam;
+import com.teacher.judge.demo.bean.*;
 import com.teacher.judge.demo.bo.Judge;
 import com.teacher.judge.demo.bo.JudgeInfo;
 import com.teacher.judge.demo.bo.User;
@@ -42,6 +39,8 @@ public class JudgeServiceImpl implements JudgeService {
     private UserCourseService userCourseService;
     @Autowired
     private CommentCategoryService commentCategoryService;
+    @Autowired
+    private Configs configs;
 
     @Override
     public boolean isJudged(String userId, String courseId, String teacherId) {
@@ -103,6 +102,7 @@ public class JudgeServiceImpl implements JudgeService {
             }
             rankVoList.add(new RankVo(teacherName, scope));
         }
+        // 升序排列
         Collections.sort(rankVoList);
         return rankVoList;
     }
@@ -174,9 +174,9 @@ public class JudgeServiceImpl implements JudgeService {
         }
         // 计算方式
         // 每个群体的平均分*对应比例加起来就是最终得分
-        // 如果某个群体没评价，则用总分的80%假的分数代替
+        // 如果某个群体没评价，则用占总分的configs.proportion比例假的分数代替
         double finalScope = 0;
-        double temp = commentCategoryService.getTotalQuestionScope() * 10 * 0.8;
+        double temp = commentCategoryService.getTotalQuestionScope() * 10 * configs.getProportion();
         log.info("题干假的所得分={}",temp);
         if (typeCount[0] != 0) {
             finalScope += MathUtil.div(scope[0] * judgeProp.getST(), typeCount[0]);

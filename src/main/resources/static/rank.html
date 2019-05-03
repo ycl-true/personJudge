@@ -21,11 +21,18 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="ibox float-e-margins">
-                        <!--<div class="ibox-title">-->
-                            <!--<h5>排名展示</h5>-->
-                        <!--</div>-->
-                        <div class="ibox-content">
-                            1111
+                        <div class="ibox-title">
+                            <h5>排名展示</h5>
+                        </div>
+                        <div class="ibox-content" id="rank-show-parent">
+                            <div id="rank-show">
+                                <div class="middle-box text-center animated fadeInRightBig" style="margin-bottom: 184px">
+                                    <h3 class="font-bold">请先选择查询选项~</h3>
+                                    <div class="error-desc">
+                                        (≧∇≦)ﾉ 课程必选哦！
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -39,7 +46,7 @@
                             <div class="form-group">
                                 <!--<label class="font-noraml">基本示例</label>-->
                                 <div class="input-group">
-                                    <select data-placeholder="选择需要排名的课程.." name="xxxx" class="chosen-select" id="sele" style="width:320px;" tabindex="2">
+                                    <select data-placeholder="选择需要排名的课程.." class="chosen-select" id="sele" style="width:320px;" tabindex="2">
                                         <option value="">选择需要排名的课程..</option>
                                     </select>
                                 </div>
@@ -113,6 +120,8 @@
     <script src="js/plugins/nouislider/nouislider.js"></script>
     <script src="js/plugins/nouislider/wNumb.js"></script>
     <script src="js/plugins/layer/layer.min.js"></script>
+    <script src="js/plugins/echarts/echarts.min.js"></script>
+    <script src="js/echart.common.js"></script>
     <script>
         var config = {
             ".chosen-select": {
@@ -166,12 +175,12 @@
             loginfo(params);
             ajaxCommon({
                 url: 'query/rank',
-                data: JSON.stringify(params)
+                data: JSON.stringify(params),
+                async: false
             }, function(obj) {
                 if(obj.code == 200){
-                    var data = obj.data;
-
-                    alert("成功");
+                    var rankData = obj.data;
+                    setRankHtml(rankData);
                 }
             }, false);
         }
@@ -189,7 +198,7 @@
             }, function(obj) {
                 if(obj.code == 200){
                     for(var key in obj.data){
-                        $("#sele").append('<option value="'+key+'" hassubinfo="true">'+obj.data[key]+'</option>');
+                        $("#sele").append('<option value="'+key+'" hassubinfo="true">《'+obj.data[key]+'》</option>');
                     }
                     $("#sele").trigger("chosen:updated");
                 }
