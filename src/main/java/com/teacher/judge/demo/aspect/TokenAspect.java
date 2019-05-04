@@ -70,6 +70,7 @@ public class TokenAspect {
     @AfterReturning(pointcut = "log()", returning = "object")
     public void doAfter(Object object){
         log.info("返回的参数={}", object);
+        log.info("##########################");
     }
 
     Map<String, Object> getNameAndValue(JoinPoint joinPoint) {

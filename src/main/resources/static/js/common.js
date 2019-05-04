@@ -107,3 +107,25 @@ function getUserId(){
     var result = eval('(' + window.localStorage.getItem("User") + ')');
     return result.userId;
 }
+
+function updateTodoJudgeCount(callback){
+// 设置待评价的数量
+    ajaxCommon({
+        url: 'query/toDoJudge?userId=' + getUserId(),
+        type: 'GET'
+    }, function(obj) {
+        if(obj.code == 200){
+            var data = obj.data;
+            //无数据则显示空白样式
+            if(data !== 0){
+                $("#toDoJudge", parent.document).text(data);
+            } else {
+                $("#toDoJudge", parent.document).text("");
+            }
+            if(typeof callback == "function") {
+                callback();
+                return false;
+            }
+        }
+    }, false);
+}

@@ -87,10 +87,12 @@
     <script src="js/jquery.cookie.js"></script>
     <script src="js/bootstrap.min.js?v=3.3.6"></script>
     <script src="js/plugins/toastr/toastr.min.js"></script>
+    <script src="js/plugins/layer/layer.min.js"></script>
     <script src="js/common.js"></script>
     <script type="text/javascript">
         var applyType = 'login';
         var condition;
+        var successMsg = "~(～￣▽￣)～登陆成功~";
         function init(){
             condition = {
                 userName: $('#userName').val(),
@@ -109,6 +111,7 @@
                 $('#rgTitle').text('登录');
                 $('#rgMsg').text('登录到教师管理系统');
                 toastr.options.positionClass = 'toast-middle-right';
+                successMsg = "~(～￣▽￣)～登陆成功~";
             } else if(type == 'register'){
                 $('#rgPassword').css('display','');
                 $("div[id^='radio_div_']").css('display','');
@@ -118,6 +121,7 @@
                 $('#rgTitle').text('注册');
                 $('#rgMsg').text('注册账号');
                 toastr.options.positionClass = 'toast-middle2-right';
+                successMsg = "~(～￣▽￣)～注册成功~";
             }
         }
         function submitAll(){
@@ -157,9 +161,14 @@
                     $.cookie("Token",data.token);
                     // 设置User对象保存
                     delete data.token;
-                    window.localStorage.setItem("User",JSON.stringify(data));
-                    window.location.href = "index.html";
-                    alert("成功");
+                    layer.alert(successMsg, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        shift: 1 //动画类型
+                    } , function(){
+                        window.localStorage.setItem("User",JSON.stringify(data));
+                        window.location.href = "index.html";
+                    });
                 } else if(obj.code == 500){
                     // 账号密码错误
                     toastr.error(obj.msg);

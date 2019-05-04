@@ -153,7 +153,6 @@
             return Number($("#"+obj).text().split("%")[0]);
         }
         function submitQuery(){
-            loginfo("开始进行排名查询");
             var selected = $("#sele").children('option:selected').val();
             // 验证
             if(!selected){
@@ -172,7 +171,6 @@
                   ST: getNum("skip-value-1"),TT:getNum("skip-value-3"),PT:getNum("skip-value-4"),TS:getNum("skip-value-2")
               }
             };
-            loginfo(params);
             ajaxCommon({
                 url: 'query/rank',
                 data: JSON.stringify(params),

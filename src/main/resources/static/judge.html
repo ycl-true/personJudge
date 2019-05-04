@@ -27,9 +27,7 @@
                         <h5>教师评价向导</h5>
                     </div>
                     <div class="ibox-content">
-                        <h2>
-                            教师评价向导
-                            </h2>
+                        <h2 id="title-text"></h2>
                         <p style="color: #db4f42">
                             0是完全不符合，10是完全符合
                         </p>
@@ -176,6 +174,8 @@
                 // 无相关信息重新登录
                 window.parent.location.href = "login.html";
             }
+            // 设置标题
+            $("#title-text").text(temp.nikeName+":《"+temp.courseName+"》");
             // 获取评价题目
             ajaxCommon({
                 url: 'comment/allComment',
@@ -276,7 +276,9 @@
                         data: JSON.stringify(allObj)
                     }, function(obj) {
                         if(obj.code == 200){
-                            window.location.href = "teachers.html";
+                            updateTodoJudgeCount(function() {
+                                window.location.href = "teachers.html";
+                            });
                         }
                     }, false);
                 }
