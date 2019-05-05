@@ -15,7 +15,10 @@ public enum Constant {
     ST("10"),
     TT("00"),
     PT("20"),
-    TS("0+")
+    TS("0+"),
+    // 留言类型
+    MSG_T("0"),
+    MSG_U("1")
     ;
     private String value;
     Constant(String value){

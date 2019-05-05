@@ -85,7 +85,7 @@ var ajaxCommon = function(opt, callback, returnFlag) {
                     alert("参数缺失!");
                     return false;
                 } else if(result.code < 0){
-                    alert("系统错误!");
+                    alert("系统错误!请联系管理员！");
                     return false;
                 }
             } else {

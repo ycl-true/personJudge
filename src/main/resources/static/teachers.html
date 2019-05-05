@@ -58,7 +58,7 @@
             var html = "";
             html += '<div class="col-sm-4">' +
                         '<div class="contact-box2">' +
-                             '<a href="profile.html">' +
+                             '<a href="javascript:void(0)" onclick="saveAndTurn('+ i +', 2);return false;">' +
                                 '<div class="col-sm-4">' +
                                     '<div class="text-center">' +
                                     '<img alt="image" class="img-circle m-t-xs img-responsive" src="'+obj.imgUrl+'">' +
@@ -78,10 +78,10 @@
                                     if(!!obj.judgeFlag){
                                         html +='<a class="btn btn-danger btn-rounded btn-outline" href="javascript:void(0)">已评价</a>'
                                     } else {
-                                        html +='<a class="btn btn-danger btn-rounded btn-outline" href="javascript:void(0)" onclick="saveParam('+ i +');return false;">待评价</a>'
+                                        html +='<a class="btn btn-danger btn-rounded btn-outline" href="javascript:void(0)" onclick="saveAndTurn('+ i +', 1);return false;">待评价</a>'
                                     }
                                      html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-                                            '<a class="btn btn-success btn-rounded" style="color:#FFF" href="buttons.html#">留言</a>' +
+                                            '<a class="btn btn-success btn-rounded" style="color:#FFF" href="javascript:void(0)" onclick="saveAndTurn('+ i +', 2);return false;">留言</a>' +
                                         '</p>' +
                                     '</div>' +
                                 '</div>'+
@@ -123,6 +123,8 @@
                             value.courseId = data[i].courseId;
                             value.courseName = data[i].courseName;
                             value.nikeName =  data[i].nikeName;
+                            value.description = data[i].description;
+                            value.imgUrl = data[i].imgUrl;
                             list.push(value);
                         }
                         // 添加移入特效
@@ -135,10 +137,13 @@
         });
         loginfo("包装好的\n");
         loginfo(list);
-        function saveParam(i){
-            // 把对应参数保存到本地缓存中
+        function saveAndTurn(i, type){
             window.localStorage.setItem("TeacherTemp",JSON.stringify(list[i]));
-            window.location.href = "judge.html";
+            if(type == 1){
+                window.location.href = "judge.html";
+            } else {
+                window.location.href = "leaveMessage.html";
+            }
         }
     </script>
 </body>
