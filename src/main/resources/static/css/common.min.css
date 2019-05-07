@@ -83,3 +83,11 @@
 .noUi-active .noUi-tooltip {
     display: block !important;
 }
+/*留言样式设计*/
+.msg-element {
+    padding-bottom: 0px !important;
+}
+.msg-content {
+    margin: 10px 0 1px;
+    font-size: 13px;
+}

@@ -1,17 +1,16 @@
 package com.teacher.judge.demo.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.teacher.judge.demo.bean.Result;
 import com.teacher.judge.demo.bo.CommentInfo;
 import com.teacher.judge.demo.bo.User;
 import com.teacher.judge.demo.enums.Constant;
 import com.teacher.judge.demo.enums.ResultEnum;
-import com.teacher.judge.demo.exception.TeachException;
 import com.teacher.judge.demo.vo.CommentInfoVo;
 import org.springframework.beans.BeanUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +32,21 @@ public class ApplyUtil {
         ).contains(type)){
             return type;
         } else {
-            throw new TeachException(ResultEnum.TOKEN_NOT_EXIST);
+            throw new RuntimeException("没有对应的人员类型");
         }
+    }
+
+    public static String getMsgOfPersonType(String type){
+        String types = getPersonType(type);
+        String msg = null;
+        if(types.equals(Constant.TEACHER.getValue())){
+            msg = "教师";
+        } else if(types.equals(Constant.STUDENT.getValue())){
+            msg = "学生";
+        } else if(types.equals(Constant.PROFESSIONAL.getValue())){
+            msg = "专家";
+        }
+        return msg;
     }
 
     public static List<CommentInfoVo> commentInfoList2VoList(List<CommentInfo> infoList){
@@ -78,15 +90,56 @@ public class ApplyUtil {
         return arrray;
     }
 
+    // 获取留言点赞状态
+    public static String getLikedType(String jsonStr, String userId){
+        if(!jsonStr.contains(userId)){
+            return Constant.LIKE_BALANCE.getValue();
+        }
+        JSONObject jsonObject = JSON.parseObject(jsonStr);
+        JSONArray likeArray = jsonObject.getJSONArray("like");
+        JSONArray disLikeArray = jsonObject.getJSONArray("dislike");
+        if(likeArray.contains(userId)){
+            return Constant.LIKE_AGREE.getValue();
+        }
+        if(disLikeArray.contains(userId)){
+            return Constant.LIKE_DISAGREE.getValue();
+        }
+        return null;
+//        array.remove(1);
+//        array.add("3333333");
+//        System.out.println(jsonObject.toString());
+//        System.out.println(jsonObject.toJSONString());
+    }
+
+    public static Object[] getChangedInfo(String jsonStr, String type, String userId){
+        Object[] result = new Object[3];
+        JSONObject jsonObject = JSON.parseObject(jsonStr);
+        JSONArray likeArray = jsonObject.getJSONArray("like");
+        JSONArray disLikeArray = jsonObject.getJSONArray("dislike");
+        if(type.equals(Constant.LIKE_1.getValue())){
+            if(!likeArray.contains(userId)){
+                likeArray.add(userId);
+            }
+        } else if(type.equals(Constant.LIKE_2.getValue())){
+            if(likeArray.contains(userId)){
+                likeArray.remove(userId);
+            }
+        } else if(type.equals(Constant.LIKE_3.getValue())){
+            if(!disLikeArray.contains(userId)){
+                disLikeArray.add(userId);
+            }
+        } else if(type.equals(Constant.LIKE_4.getValue())){
+            if(disLikeArray.contains(userId)){
+                disLikeArray.remove(userId);
+            }
+        }
+        result[0] = likeArray.size();
+        result[1] = disLikeArray.size();
+        result[2] = jsonObject.toString();
+        return result;
+    }
+
     public static void main(String[] args){
-        String json = "{\"A01\":1,\"A02\":2,\"A03\":3}";
-//        System.out.println(getScope(json,"A02")[0]);
-//        System.out.println(getScope(json,"A02")[1]);
-//        System.out.println(getScope(json,null)[1]);
-        BigDecimal b1 = new BigDecimal(Double.toString(12));
-
-
-        System.out.println((MathUtil.div(13,30)*MathUtil.div(13,30)));
-        System.out.println(MathUtil.mul(MathUtil.div(13,30),MathUtil.div(13,30)));
+        String json = "{\"like\":[\"11111\",\"22222222\"],\"dislike\":[]}";
     }
 }

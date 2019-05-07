@@ -34,5 +34,7 @@ public class Message {
     private Integer agree;
     private Integer disagree;
     private Date date;
+    /** 保存的对应点赞或者讨厌的userId*/
+    private String yesOrNo;
     private String valid;
 }

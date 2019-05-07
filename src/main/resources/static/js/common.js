@@ -129,3 +129,11 @@ function updateTodoJudgeCount(callback){
         }
     }, false);
 }
+
+function commonAlert(msg) {
+    layer.alert(msg, {
+        skin: 'layui-layer-lan',
+        closeBtn: 0,
+        shift: 1 //动画类型
+    });
+}

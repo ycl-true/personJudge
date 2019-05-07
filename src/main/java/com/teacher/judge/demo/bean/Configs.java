@@ -10,4 +10,5 @@ import org.springframework.stereotype.Component;
 public class Configs {
     private Integer timeOut;
     private Double proportion;
+    private Integer msgPageSize;
 }

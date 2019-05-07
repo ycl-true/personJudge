@@ -13,3 +13,5 @@ configs:
   timeOut: 30
   # 某个群体没评价时，预估好评率
   proportion: 0.8
+  # 留言每次显示条数
+  msgPageSize: 10
