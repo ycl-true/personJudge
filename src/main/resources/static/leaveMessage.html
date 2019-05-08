@@ -27,7 +27,7 @@
                             <h4 class="text-center"><strong id="info_name"></strong></h4>
                             <h5><i class="fa fa-book"></i> &nbsp;&nbsp;课程</h5>
                             <p id="info_courseName"></p>
-                            <h5><i class="fa fa-user"></i> &nbsp;&nbsp;关于我</h5>
+                            <h5><i class="fa fa-bullhorn"></i> &nbsp;&nbsp;关于我</h5>
                             <p id="info_description"></p>
                             <h5><i class="fa fa-envelope"></i> &nbsp;&nbsp;有什么想对我说的~</h5>
                             <div class="chat-message-form">
@@ -57,51 +57,6 @@
                     <div class="ibox-content">
                         <div>
                             <div class="feed-activity-list">
-                                <!--<div class="feed-element msg-element">-->
-                                    <!--<a href="#" class="pull-left">-->
-                                        <!--<img alt="image" class="img-circle" src="img/userImag/a2.jpg">-->
-                                    <!--</a>-->
-                                    <!--<div class="media-body ">-->
-                                        <!--<small class="pull-right text-navy">老师</small>-->
-                                        <!--<strong>奔波儿灞</strong>-->
-                                        <!--<br>-->
-                                        <!--<small class="text-muted">54分钟前 留言</small>-->
-                                        <!--<p class="msg-content">这是内容</p>-->
-                                        <!--<div class="pull-right">-->
-                                            <!--<a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> 赞 </a>-->
-                                            <!--<a class="btn btn-xs btn-white"><i class="fa fa-thumbs-down"></i> 踩</a>-->
-                                            <!--<a class="btn btn-xs btn-white" id="" onclick=""><i class="fa fa-pencil"></i> 评论</a>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="feed-element msg-element">-->
-                                    <!--<a href="#" class="pull-left">-->
-                                        <!--<img alt="image" class="img-circle" src="img/userImag/a2.jpg">-->
-                                    <!--</a>-->
-                                    <!--<div class="media-body ">-->
-                                        <!--<small class="pull-right">老师</small>-->
-                                        <!--<strong>作家崔成浩</strong> 回复了 <strong>灞波儿奔</strong>.-->
-                                        <!--<br>-->
-                                        <!--<small class="text-muted">今天 09:27 来自 Koryolink iPhone</small>-->
-                                        <!--<p class="msg-content">?????</p>-->
-                                        <!--<div class="well">-->
-                                            <!--抽奖，人民币2000元，从转发这个微博的粉丝中抽取一人。11月16日平台开奖。随手一转，万一中了呢？-->
-                                        <!--</div>-->
-                                        <!--<div class="pull-right">-->
-                                            <!--<a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> 赞 </a>-->
-                                            <!--<a class="btn btn-xs btn-white"><i class="fa fa-thumbs-down"></i> 踩</a>-->
-                                            <!--<a class="btn btn-xs btn-white" id="tt" onclick=""><i class="fa fa-pencil"></i> 评论</a>-->
-                                        <!--</div>-->
-                                        <!--<div>-->
-                                            <!--<div class="chat-message-form">-->
-                                                <!--<textarea class="form-control message-input" id="" placeholder="输入消息内容，点击按钮留言~"></textarea>-->
-                                            <!--</div>-->
-                                            <!--<div class="pull-right" style="margin-top: 15px">-->
-                                                <!--<a class="btn btn-xs btn-white"><i class="fa fa-pencil"></i> 发表回复 </a>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
                             </div>
                             <button id="more" class="btn btn-primary btn-block m" onclick="moreMsg();"><i class="fa fa-arrow-down"></i> 显示更多</button>
                         </div>
@@ -138,20 +93,6 @@
         }
         function clearText(){
             $("#message").val('');
-        }
-        function postMessage(condition, url, callback){
-            ajaxCommon({
-                url: url,
-                async: false,
-                data: JSON.stringify(condition)
-            }, function(obj) {
-                if(obj.code == 200){
-                    if(typeof callback == "function") {
-                        callback(obj.data);
-                        return false;
-                    }
-                }
-            }, false);
         }
         function leaveMessage(){
             loginfo("开始留言");

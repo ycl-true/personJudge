@@ -3,6 +3,7 @@ package com.teacher.judge.demo.controller;
 import com.teacher.judge.demo.bean.LoginBean;
 import com.teacher.judge.demo.bean.Register;
 import com.teacher.judge.demo.bean.Result;
+import com.teacher.judge.demo.bean.UserBean;
 import com.teacher.judge.demo.bo.User;
 import com.teacher.judge.demo.enums.Constant;
 import com.teacher.judge.demo.enums.ResultEnum;
@@ -21,10 +22,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -42,8 +45,9 @@ public class UserController {
     // 用户登录
     @PostMapping(value = "/login")
     @ApiOperation(value = "用户登录", notes = "返回用户数据+token")
-    public Result login(@RequestBody LoginBean loginBean) {
-        if (StringUtils.isEmpty(loginBean.getUserName()) || StringUtils.isEmpty(loginBean.getPassWord())) {
+    public Result login(@Valid @RequestBody LoginBean loginBean, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            log.info("提示参数:{}",bindingResult.getFieldError().getDefaultMessage());
             throw new TeachException(ResultEnum.PARAM_NOT_EXIST);
         }
         // 校验是否存在用户
@@ -68,8 +72,9 @@ public class UserController {
     // 注册 此时无token
     @PostMapping(value = "/register")
     @ApiOperation(value = "用户注册", notes = "返回用户数据+token")
-    public Result register(@RequestBody Register register) {
-        if (StringUtils.isEmpty(register.getUserName()) || StringUtils.isEmpty(register.getPassWord()) || StringUtils.isEmpty(register.getType())) {
+    public Result register(@Valid @RequestBody Register register, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            log.info("提示参数:{}",bindingResult.getFieldError().getDefaultMessage());
             throw new TeachException(ResultEnum.PARAM_NOT_EXIST);
         }
         // 校验是否存在用户
@@ -84,6 +89,8 @@ public class UserController {
             u.setPassword(DigestUtils.md5DigestAsHex(register.getPassWord().getBytes()));
             u.setValid(Constant.YES.getValue());
             u.setPersonType(ApplyUtil.getPersonType(register.getType()));
+            u.setRegisterDate(new Date());
+            u.setImgUrl("img/userImag/default.jpg");
             u = userService.save(u);
             UserVo vo = new UserVo();
             BeanUtils.copyProperties(u, vo);
@@ -113,13 +120,29 @@ public class UserController {
         return ApplyUtil.success(list);
     }
 
-    // 以下为测试接口
-    @PostMapping(value = "/getUserVo")
-    @ApiOperation(value = "这是一个post", notes = "post_notes")
+    @PostMapping(value = "/user")
+    @ApiOperation(value = "更新用户信息", notes = "返回用户数据")
     @ApiImplicitParam(paramType = "header", name = "token", value = "token", required = true, dataType = "String")
-    public Result getUserVo(@RequestBody UserVo userVo) {
-        return ApplyUtil.success(userVo);
+    public Result updateUser(@Valid @RequestBody UserBean userBean, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            log.info("提示参数:{}",bindingResult.getFieldError().getDefaultMessage());
+            throw new TeachException(ResultEnum.PARAM_NOT_EXIST);
+        }
+        // 查找用户
+        User user = userService.findById(userBean.getUserId());
+        if (user != null) {
+            // 没有传递则沿用旧的
+            if(userBean.getNikeName() == null){
+                userBean.setNikeName(user.getNikeName());
+            }
+            BeanUtils.copyProperties(userBean, user);
+            user = userService.save(user);
+            UserVo userVo = new UserVo();
+            BeanUtils.copyProperties(user, userVo);
+            return ApplyUtil.success(userVo);
+        } else {
+            // 不存在则抛出异常
+            throw new TeachException(ResultEnum.USER_NOT_EXIST);
+        }
     }
-
-
 }

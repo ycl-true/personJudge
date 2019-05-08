@@ -36,7 +36,7 @@
 #content-main2 {
     height: calc(100% - 90px);
     /*overflow: hidden*/
-    overflow: visible
+    overflow: visible;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
     #content-main2 {
@@ -90,4 +90,8 @@
 .msg-content {
     margin: 10px 0 1px;
     font-size: 13px;
+}
+/*用户信息页面样式*/
+.tab-pane-hight{
+    height: 388px !important;
 }

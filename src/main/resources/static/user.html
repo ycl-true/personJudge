@@ -1,15 +1,545 @@
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教师评价系统</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="css/common.min.css" rel="stylesheet">
 </head>
-<body>
-用户个人信息页面
-<script>
-    function forword(url){
-        window.location.href = url;
-    }
-</script>
-<a href="javascript:void(0)"onclick="forword('teachers.html');return false;">待评价教师</a>
 
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInRight">
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div>
+                    <div class="ibox-content text-center" style="padding-bottom: 1px">
+                        <div class="m-b-sm">
+                            <img alt="image" id="info_imgUrl" class="img-circle" src="img/userImag/default.jpg" width="200px" height="200px">
+                        </div>
+                    </div>
+                    <div class="ibox-content profile-content" style="padding-top: 1px">
+                        <h4 class="text-center"><strong id="info_name"></strong></h4>
+                        <h4><i class="fa fa-credit-card"></i> &nbsp;&nbsp;身份</h4>
+                        <blockquote><p id="info_identity"></p></blockquote>
+                        <h4><i class="fa fa-bullhorn"></i> &nbsp;&nbsp;个人简介</h4>
+                        <blockquote><p id="info_description"></p></blockquote>
+                        <h4><i class="fa fa-clock-o"></i> &nbsp;&nbsp;注册时间</h4>
+                        <blockquote><p id="info_registerDate"></p></blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="clients-list" style="margin-top: 0px">
+                        <ul class="nav nav-tabs">
+                            <!--<span class="pull-right small text-muted">xxx</span>-->
+                            <li class="active"><a data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i> 基本信息</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i> 公司</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" href="#tab-3"><i class="fa fa-briefcase"></i> 公司</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab-1" class="tab-pane tab-pane-hight active">
+                                 <form class="form-horizontal m-t" id="userForm" style="margin-top:35px;">
+                                        <div class="form-group" id="userName-group">
+                                            <label class="col-sm-3 control-label">真实姓名：</label>
+                                            <div class="col-sm-8">
+                                                <input id="userName" name="userName" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error">
+                                            </div>
+                                        </div>
+                                         <div class="form-group">
+                                             <label class="col-sm-3 control-label">E-mail：</label>
+                                             <div class="col-sm-8">
+                                                 <input id="email" name="email" class="form-control" type="email">
+                                             </div>
+                                         </div>
+                                         <div class="form-group">
+                                             <label class="col-sm-3 control-label">手机号码：</label>
+                                             <div class="col-sm-8">
+                                                 <input id="telphone" name="telphone" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error">
+                                             </div>
+                                         </div>
+                                         <div class="form-group">
+                                             <label class="col-sm-3 control-label">一句话描述：</label>
+                                             <div class="col-sm-8">
+                                                 <input id="description" name="description" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error">
+                                             </div>
+                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">更改密码：</label>
+                                            <div class="col-sm-8">
+                                                <input id="passWord" name="passWord" class="form-control" type="password">
+                                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> (＞﹏＜) 密码更改选填哦~</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="confirm-group">
+                                            <label class="col-sm-3 control-label">确认新密码：</label>
+                                            <div class="col-sm-8">
+                                                <input id="confirm_passWord" name="confirm_passWord" class="form-control" type="password">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-8 col-sm-offset-9">
+                                                <button class="btn btn-primary" onclick="updateUserInfo();return false;">更新信息</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                            </div>
+                            <div id="tab-2" class="tab-pane">
+                                <div class="full-height-scroll">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <tbody>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-1" class="client-link">瑞安市海诚机械有限公司</a>
+                                                </td>
+                                                <td>广州</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-2" class="client-link">上海申弘投资发展有限公司</a>
+                                                </td>
+                                                <td>广州</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-3" class="client-link">衢州凯德竹业科技有限公司</a>
+                                                </td>
+                                                <td>广州</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-1" class="client-link">北京科诺耐尔科技发展有限公司</a>
+                                                </td>
+                                                <td>广州</td>
+                                                <td><i class="fa fa-flag"></i> 中国，美国</td>
+                                                <td class="client-status"><span class="label label-warning">等待验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-2" class="client-link">上海一喜食品机械有限公司</a>
+                                                </td>
+                                                <td>广州</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-3" class="client-link"> 北京巨皓知识产权代理有限公司</a>
+                                                </td>
+                                                <td>广州</td>
+                                                <td><i class="fa fa-flag"></i> 日本</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-2" class="client-link">山东百洋工业装备有限公司</a>
+                                                </td>
+                                                <td>广州</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-1" class="client-link">瑞安市海诚机械有限公司</a>
+                                                </td>
+                                                <td>广州</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-2" class="client-link">上海申弘投资发展有限公司</a>
+                                                </td>
+                                                <td>广州</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-3" class="client-link">衢州凯德竹业科技有限公司</a>
+                                                </td>
+                                                <td>广州</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-1" class="client-link">北京科诺耐尔科技发展有限公司</a>
+                                                </td>
+                                                <td>上海</td>
+                                                <td><i class="fa fa-flag"></i> 中国，加拿大</td>
+                                                <td class="client-status"><span class="label label-warning">等待验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-2" class="client-link">上海一喜食品机械有限公司</a>
+                                                </td>
+                                                <td>上海</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-3" class="client-link"> 北京巨皓知识产权代理有限公司</a>
+                                                </td>
+                                                <td>上海</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-2" class="client-link">山东百洋工业装备有限公司</a>
+                                                </td>
+                                                <td>上海</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-1" class="client-link">瑞安市海诚机械有限公司</a>
+                                                </td>
+                                                <td>上海</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-2" class="client-link">上海申弘投资发展有限公司</a>
+                                                </td>
+                                                <td>上海</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-3" class="client-link">衢州凯德竹业科技有限公司</a>
+                                                </td>
+                                                <td>北京</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-1" class="client-link">北京科诺耐尔科技发展有限公司</a>
+                                                </td>
+                                                <td>北京</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"><span class="label label-warning">等待验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-2" class="client-link">上海一喜食品机械有限公司</a>
+                                                </td>
+                                                <td>北京</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-3" class="client-link"> 北京巨皓知识产权代理有限公司</a>
+                                                </td>
+                                                <td>北京</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><a data-toggle="tab" href="#company-2" class="client-link">山东百洋工业装备有限公司</a>
+                                                </td>
+                                                <td>北京</td>
+                                                <td><i class="fa fa-flag"></i> 中国</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tab-3" class="tab-pane">
+                                <div class="full-height-scroll">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <tbody>
+                                            <tr>
+                                                <td class="client-avatar"><img alt="image" src="img/a2.jpg"> </td>
+                                                <td><a data-toggle="tab" href="#contact-1" class="client-link">袁岳</a>
+                                                </td>
+                                                <td> 瑞安市海诚机械有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-envelope"> </i>
+                                                </td>
+                                                <td> gravida@qq.com</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar"><img alt="image" src="img/a3.jpg"> </td>
+                                                <td><a data-toggle="tab" href="#contact-2" class="client-link">王利锋</a>
+                                                </td>
+                                                <td>上海沃精机械制造有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-envelope"> </i>
+                                                </td>
+                                                <td> rooney@sina.com</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar"><img alt="image" src="img/a4.jpg"> </td>
+                                                <td><a data-toggle="tab" href="#contact-3" class="client-link">张有为 </a>
+                                                </td>
+                                                <td>张家港同丰机械制造有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-phone"> </i>
+                                                </td>
+                                                <td> 13209009485</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a5.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-4" class="client-link">李全福</a>
+                                                </td>
+                                                <td>东莞市益健包装机械有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-phone"> </i>
+                                                </td>
+                                                <td> 15709758904</td>
+                                                <td class="client-status"><span class="label label-warning">等待验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a6.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-2" class="client-link">吴俭俭</a>
+                                                </td>
+                                                <td>温州轩特包装机械有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-phone"> </i>
+                                                </td>
+                                                <td> 14790086438</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a7.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-3" class="client-link">萧志林</a>
+                                                </td>
+                                                <td>佛山市顺德区威利丰贸易有限公司 </td>
+                                                <td class="contact-type"><i class="fa fa-envelope"> </i>
+                                                </td>
+                                                <td> pacheco@163.com</td>
+                                                <td class="client-status"><span class="label label-info">未验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a1.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-1" class="client-link">沈家华</a>
+                                                </td>
+                                                <td>黄岛区涵海润机械厂</td>
+                                                <td class="contact-type"><i class="fa fa-envelope"> </i>
+                                                </td>
+                                                <td> Simon@erta.com</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a3.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-2" class="client-link">王利锋</a>
+                                                </td>
+                                                <td>上海沃精机械制造有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-envelope"> </i>
+                                                </td>
+                                                <td> rooney@sina.com</td>
+                                                <td class="client-status"><span class="label label-warning">等待验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a4.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-3" class="client-link">张有为 </a>
+                                                </td>
+                                                <td>张家港同丰机械制造有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-phone"> </i>
+                                                </td>
+                                                <td> 18604789823</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a5.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-4" class="client-link">李全福</a>
+                                                </td>
+                                                <td>东莞市益健包装机械有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-phone"> </i>
+                                                </td>
+                                                <td> 15600002345</td>
+                                                <td class="client-status"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a2.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-1" class="client-link">袁岳</a>
+                                                </td>
+                                                <td> 瑞安市海诚机械有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-envelope"> </i>
+                                                </td>
+                                                <td> gravida@qq.com</td>
+                                                <td class="client-status"><span class="label label-danger">已删除</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a7.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-2" class="client-link">萧志林</a>
+                                                </td>
+                                                <td>佛山市顺德区威利丰贸易有限公司 </td>
+                                                <td class="contact-type"><i class="fa fa-envelope"> </i>
+                                                </td>
+                                                <td> pacheco@163.com</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a5.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-3" class="client-link">李全福</a>
+                                                </td>
+                                                <td>东莞市益健包装机械有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-phone"> </i>
+                                                </td>
+                                                <td> 18897654904</td>
+                                                <td class="client-status"><span class="label label-info">未验证</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="client-avatar">
+                                                    <a href="#"><img alt="image" src="img/a6.jpg">
+                                                    </a>
+                                                </td>
+                                                <td><a data-toggle="tab" href="#contact-4" class="client-link">吴俭俭</a>
+                                                </td>
+                                                <td>温州轩特包装机械有限公司</td>
+                                                <td class="contact-type"><i class="fa fa-phone"> </i>
+                                                </td>
+                                                <td> 18290876923</td>
+                                                <td class="client-status"><span class="label label-primary">已验证</span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/common.js"></script>
+<script src="js/content.min.js?v=1.0.0"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/plugins/validate/jquery.validate.min.js"></script>
+<script src="js/plugins/validate/messages_zh.min.js"></script>
+<script src="js/user-form-validate.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script>
+    var user = eval('(' + window.localStorage.getItem("User") + ')');
+    var hasNameAready;
+    function setUserInfo(){
+        $("#info_name").text(user.userName);
+        $("#info_imgUrl").attr('src',user.imgUrl);
+        var identity;
+        if(user.personType == '1'){
+            identity = "学生";
+        } else if(user.personType == '1'){
+            identity = "教师";
+        } else if(user.personType == '2'){
+            identity = "专家"
+        }
+        $("#info_identity").text(identity);
+        $("#info_registerDate").text(user.registerDate);
+        if(!user.description){
+            $("#info_description").text('还未填写个人简介哦~');
+        } else {
+            $("#info_description").text(user.description);
+        }
+        if(!!user.nikeName){
+            hasNameAready = true;
+            $("#userName").val(user.nikeName);
+            $('#userName').attr("readonly","readonly");
+        }
+        $("#email").val(user.email);
+        $("#telphone").val(user.telphone);
+        $("#description").val(user.description);
+    }
+    function updateUserInfo(){
+
+        var condition = {
+            userId: user.userId,
+            nikeName: $("#userName").val(),
+            email: $("#email").val(),
+            telphone: $("#telphone").val(),
+            description: $("#description").val()
+        };
+        if(hasNameAready){
+            condition.nikeName = null;
+        }
+        if($("#userForm").valid()){
+            // 验证通过
+            postMessage(condition,"user/user", function(obj) {
+                commonAlert("更新成功~");
+                //更新缓存
+                window.localStorage.setItem("User",JSON.stringify(obj));
+                $("#tab-1").addClass("tab-pane-hight");
+                if(hasNameAready){
+                    //已经有真实姓名的去掉样式
+                    $("#userName-group").removeClass("has-success");
+                }
+                $("#info_description").text(condition.description);
+            });
+        } else {
+            //验证失败
+            $("#tab-1").removeClass("tab-pane-hight");
+        }
+        // 不知道为什么这里老师显示成功样式，先定时清除这个样式
+        $("#confirm-group").removeClass("has-success");
+    }
+    $(document).ready(function () {
+        setUserInfo();
+
+    });
+</script>
 </body>
 </html>

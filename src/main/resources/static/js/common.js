@@ -82,10 +82,11 @@ var ajaxCommon = function(opt, callback, returnFlag) {
                     window.location.href = "login.html";
                     return false;
                 } else if(result.code == 100){
-                    alert("参数缺失!");
+                    // alert("参数缺失!");
+                    alert("系统错误!请联系管理员！100");
                     return false;
                 } else if(result.code < 0){
-                    alert("系统错误!请联系管理员！");
+                    alert("系统错误!请联系管理员！-1");
                     return false;
                 }
             } else {
@@ -136,4 +137,19 @@ function commonAlert(msg) {
         closeBtn: 0,
         shift: 1 //动画类型
     });
+}
+
+function postMessage(condition, url, callback){
+    ajaxCommon({
+        url: url,
+        async: false,
+        data: JSON.stringify(condition)
+    }, function(obj) {
+        if(obj.code == 200){
+            if(typeof callback == "function") {
+                callback(obj.data);
+                return false;
+            }
+        }
+    }, false);
 }

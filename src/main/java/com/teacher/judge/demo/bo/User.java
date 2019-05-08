@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 
 /**
  * 用户
@@ -42,5 +43,7 @@ public class User {
     private String description;
     /**头像路径*/
     private String imgUrl;
+    /**注册时间*/
+    private Date registerDate;
 
 }
