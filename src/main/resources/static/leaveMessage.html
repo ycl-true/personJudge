@@ -103,11 +103,13 @@
             var condition = {
                 teacherId: temp.teacherId,
                 userId: getUserId(),
+                courseId: temp.courseId,
                 content: $("#message").val(),
                 messageType: 0
             };
             postMessage(condition,"message/message", function(obj) {
                 commonAlert("(∩_∩) 留言成功~");
+                clearText();
                 // 更新页面
                 $(".feed-activity-list").prepend(getMessageHtml(obj));
                 $("#blank").hide();
@@ -186,7 +188,7 @@
         function initMsg(num){
             // 初始只显示第一页
             ajaxCommon({
-                url: 'message/messages?teacherId='+temp.teacherId+'&pageNum='+num+'&userId='+getUserId(),
+                url: 'message/messages?teacherId='+temp.teacherId+'&pageNum='+num+'&userId='+getUserId()+'&courseId='+temp.courseId,
                 type: 'GET',
                 async: false
             }, function(obj) {
@@ -245,6 +247,7 @@
 
                     var condition = {
                         teacherId: temp.teacherId,
+                        courseId: temp.courseId,
                         userId: getUserId(),
                         content: content.val(),
                         messageType: 1,
@@ -255,6 +258,13 @@
                     postMessage(condition,"message/message", function(obj) {
                         // 更新页面
                         $(".feed-activity-list").prepend(getMessageHtml(obj));
+                        // 把所有回复按钮的颜色变回来
+                        $("a[id^='leaveMsg_']").each(function(){
+                            if($(this).hasClass('btn-primary')){
+                                $(this).removeClass("btn-primary");
+                                $(this).addClass("btn-white");
+                            }
+                        });
                         hideAll();
                         bindEle();
                     });

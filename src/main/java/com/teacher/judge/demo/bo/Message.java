@@ -22,6 +22,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String teacherId;
+    private String courseId;
     /** 评论类型：0是直接评论 1是回复其他人*/
     private String messageType;
     private String content;

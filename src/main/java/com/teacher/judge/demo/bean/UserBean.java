@@ -21,4 +21,5 @@ public class UserBean {
     /**一句话描述*/
     @NotEmpty(message="用户自定义描述不能为空")
     private String description;
+    private String rePassword;
 }

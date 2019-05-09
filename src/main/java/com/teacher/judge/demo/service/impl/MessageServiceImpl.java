@@ -6,10 +6,12 @@ import com.teacher.judge.demo.bo.Message;
 import com.teacher.judge.demo.bo.User;
 import com.teacher.judge.demo.dao.MessageDao;
 import com.teacher.judge.demo.enums.Constant;
+import com.teacher.judge.demo.service.CourseService;
 import com.teacher.judge.demo.service.MessageService;
 import com.teacher.judge.demo.service.UserService;
 import com.teacher.judge.demo.util.ApplyUtil;
 import com.teacher.judge.demo.vo.MessageVo;
+import com.teacher.judge.demo.vo.UserMsgVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class MessageServiceImpl implements MessageService {
     private MessageDao messageDao;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CourseService courseService;
 
     @Override
     public MessageVo saveMessage(MessageParam messageParam) {
@@ -57,10 +61,10 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional(readOnly = true) // 只读事务
-    public List<MessageVo> getAllMsgByTeacherId(String teacherId, Integer pageNum, Integer pageLimit, String userId) {
+    public List<MessageVo> getAllMsgByTeacherId(String teacherId, Integer pageNum, Integer pageLimit, String userId, String courseId) {
         Sort sort = new Sort(Sort.Direction.DESC,"date");
         Pageable pageable =PageRequest.of(pageNum - 1, pageLimit, sort);
-        Page<Message> msgPage = messageDao.findByTeacherIdAndValid(teacherId,Constant.YES.getValue(), pageable);
+        Page<Message> msgPage = messageDao.findByTeacherIdAndCourseIdAndValid(teacherId, courseId, Constant.YES.getValue(), pageable);
         if(!msgPage.hasContent()){
             return null;
         }
@@ -84,8 +88,12 @@ public class MessageServiceImpl implements MessageService {
         // 如果是回复别人的类型则查询回复的人名+内容
         if (msg.getMessageType().equals(Constant.MSG_U.getValue())){
             vo.setToName(userService.findById(msg.getToId()).getUserName());
-            Message parentMsg = messageDao.findByIdAndValid(msg.getParentId(), Constant.YES.getValue());
-            vo.setParentContent(parentMsg.getContent());
+            Message parentMsg = messageDao.getOne(msg.getParentId());
+            if(parentMsg.getValid().equals(Constant.NO.getValue())){
+                vo.setParentContent("该留言内容涉嫌违规，不予展示");
+            } else {
+                vo.setParentContent(parentMsg.getContent());
+            }
         }
         // 有userId代表要判断此留言下该用户的点赞状态
         if(userId != null){
@@ -106,5 +114,32 @@ public class MessageServiceImpl implements MessageService {
         msg.setDisagree((Integer) result[1]);
         msg.setYesOrNo((String) result[2]);
         messageDao.save(msg);
+    }
+
+    @Override
+    public List<UserMsgVo> getAllUserMsgByUserId(Integer pageNum, Integer pageLimit, String userId) {
+        Sort sort = new Sort(Sort.Direction.DESC,"date");
+        Pageable pageable =PageRequest.of(pageNum - 1, pageLimit, sort);
+        // 查询该用户所有的留言/评论 （包括非法的）
+        Page<Message> msgPage = messageDao.findByFromId(userId, pageable);
+        if(!msgPage.hasContent()){
+            return null;
+        }
+        log.info("这页数据={}",msgPage.getNumberOfElements());
+        // 拼装数据
+        List<UserMsgVo> voList = new ArrayList<>();
+        for (Message msg: msgPage.getContent()) {
+            UserMsgVo vo = new UserMsgVo();
+            BeanUtils.copyProperties(msg, vo);
+            vo.setCourseName(courseService.getAllCourse().get(msg.getCourseId()));
+            User user = userService.findById(msg.getTeacherId());
+            vo.setTeacherName(user.getNikeName());
+            vo.setTeacherImgUrl(user.getImgUrl());
+            if(msg.getMessageType().equals(Constant.MSG_U.getValue())){
+                vo.setToName(userService.findById(msg.getToId()).getUserName());
+            }
+            voList.add(vo);
+        }
+        return voList;
     }
 }

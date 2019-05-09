@@ -79,6 +79,7 @@ var ajaxCommon = function(opt, callback, returnFlag) {
                     }
                 } else if(result.code == 401 || result.code == 403 || result.code == 500){
                     // 用户token过期或者非法访问，重新登录
+                    alert("用户状态过期，请重新登录！");
                     window.location.href = "login.html";
                     return false;
                 } else if(result.code == 100){

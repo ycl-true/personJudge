@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MessageDao extends JpaRepository<Message, Integer> {
-    Page<Message> findByTeacherIdAndValid(String teacherId, String valid, Pageable pageable);
-    Message findByIdAndValid(Integer id, String valid);
+    Page<Message> findByTeacherIdAndCourseIdAndValid(String teacherId,String courseId, String valid, Pageable pageable);
+    Page<Message> findByFromId(String fromId, Pageable pageable);
 }

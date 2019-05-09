@@ -9,6 +9,7 @@ import com.teacher.judge.demo.exception.TeachException;
 import com.teacher.judge.demo.service.MessageService;
 import com.teacher.judge.demo.util.ApplyUtil;
 import com.teacher.judge.demo.vo.MessageVo;
+import com.teacher.judge.demo.vo.UserMsgVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -43,14 +44,20 @@ public class MessageController {
     }
 
     @GetMapping(value = "/messages")
+    @ApiOperation(value = "获取该教师该课程的留言", notes = "获取该教师该课程的留言")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "header", name = "token", value = "token值", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "teacherId", value = "教师id", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "pageNum", value = "教师id", required = true, dataType = "Integer"),
-            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前用户id", required = true, dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "pageNum", value = "页码数(从1开始)", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前用户id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "courseId", value = "课程id", required = true, dataType = "String")
     })
-    public Result getTeacherMsg(@RequestParam(value = "teacherId") String teacherId, @RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "userId") String userId){
-        List<MessageVo> voList = messageService.getAllMsgByTeacherId(teacherId, pageNum,configs.getMsgPageSize(), userId);
+    public Result getTeacherMsg(@RequestParam(value = "teacherId") String teacherId,
+                                @RequestParam(value = "pageNum") Integer pageNum,
+                                @RequestParam(value = "userId") String userId,
+                                @RequestParam(value = "courseId") String courseId
+    ){
+        List<MessageVo> voList = messageService.getAllMsgByTeacherId(teacherId, pageNum,configs.getMsgPageSize(), userId, courseId);
         return ApplyUtil.success(voList);
     }
 
@@ -65,5 +72,19 @@ public class MessageController {
         messageService.updateLikeOrDis(likeOrDis);
         return ApplyUtil.success();
     }
+
+    @GetMapping(value = "/userMessages")
+    @ApiOperation(value = "获取该用户所有的留言", notes = "获取该用户所有的留言")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "header", name = "token", value = "token值", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "pageNum", value = "页码数(从1开始)", required = true, dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前用户id", required = true, dataType = "String")
+    })
+    public Result getTeacherMsg(@RequestParam(value = "pageNum") Integer pageNum, @RequestParam(value = "userId") String userId
+    ){
+        List<UserMsgVo> voList = messageService.getAllUserMsgByUserId(pageNum,configs.getMsgPageSize(), userId);
+        return ApplyUtil.success(voList);
+    }
+
 
 }

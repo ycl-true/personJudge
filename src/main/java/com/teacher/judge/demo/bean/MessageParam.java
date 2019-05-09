@@ -10,6 +10,8 @@ import javax.validation.constraints.NotEmpty;
 public class MessageParam {
     @NotEmpty(message="教师id不能为空")
     private String teacherId;
+    @NotEmpty(message="课程id不能为空")
+    private String courseId;
     /** 评论类型：0是直接评论 1是回复其他人*/
     @NotEmpty(message="留言类型不能为空")
     private String messageType;

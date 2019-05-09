@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -136,6 +137,9 @@ public class UserController {
                 userBean.setNikeName(user.getNikeName());
             }
             BeanUtils.copyProperties(userBean, user);
+            if(!StringUtils.isEmpty(userBean.getRePassword())){
+                user.setPassword(DigestUtils.md5DigestAsHex(userBean.getRePassword().trim().getBytes()));
+            }
             user = userService.save(user);
             UserVo userVo = new UserVo();
             BeanUtils.copyProperties(user, userVo);
