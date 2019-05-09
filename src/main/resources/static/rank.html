@@ -183,6 +183,17 @@
             }, false);
         }
         $(document).ready(function () {
+            var ifNeedComplete = window.localStorage.getItem("ifNeedComplete");
+            if(!!ifNeedComplete && ifNeedComplete == '1'){
+                layer.alert("请先完善个人信息哦~", {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0,
+                    shift: 1 //动画类型
+                }, function(){
+                    window.localStorage.removeItem("ifNeedComplete");
+                    window.location.href="user.html";
+                });
+            }
             //设置表格元素属性
             $(".table td").css("border-top","0px");
             $("#content-3 td").css("padding","8px 0px");

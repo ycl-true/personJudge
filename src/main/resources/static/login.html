@@ -166,6 +166,9 @@
                         closeBtn: 0,
                         shift: 1 //动画类型
                     } , function(){
+                        if(applyType == 'register'){
+                            window.localStorage.setItem("ifNeedComplete","1");
+                        }
                         window.localStorage.setItem("User",JSON.stringify(data));
                         window.location.href = "index.html";
                     });
