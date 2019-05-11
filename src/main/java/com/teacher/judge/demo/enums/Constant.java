@@ -11,6 +11,7 @@ public enum Constant {
     TEACHER("0"),
     STUDENT("1"),
     PROFESSIONAL("2"),
+    ADMIN("3"),
     // 评价类型
     ST("10"),
     TT("00"),

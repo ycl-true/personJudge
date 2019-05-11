@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         if(Constant.YES.getValue().equals(user.getValid())){
             return user;
         } else {
-            throw new TeachException(ResultEnum.USER_NOT_EXIST);
+            throw new TeachException(ResultEnum.USER_IS_EXPIRE);
         }
     }
 

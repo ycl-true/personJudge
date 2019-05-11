@@ -4,6 +4,7 @@ import com.teacher.judge.demo.bean.*;
 import com.teacher.judge.demo.bo.Judge;
 import com.teacher.judge.demo.bo.JudgeInfo;
 import com.teacher.judge.demo.bo.User;
+import com.teacher.judge.demo.bo.UserCourse;
 import com.teacher.judge.demo.dao.JudgeDao;
 import com.teacher.judge.demo.dao.JudgeInfoDao;
 import com.teacher.judge.demo.dto.JudgeDto;
@@ -105,6 +106,16 @@ public class JudgeServiceImpl implements JudgeService {
         // 升序排列
         Collections.sort(rankVoList);
         return rankVoList;
+    }
+
+    // 权限删除前先把评论主表置为失效
+    @Override
+    public void deleteJudge(UserCourse userCourse) {
+        Judge judge = judgeDao.findByUserIdAndCourseIdAndTeachIdAndValid(userCourse.getUserId(), userCourse.getCourseId(), userCourse.getTeacherId(), Constant.YES.getValue());
+        if(judge != null){
+            judge.setValid(Constant.NO.getValue());
+            judgeDao.save(judge);
+        }
     }
 
     // 填充内容,返回所有人对此老师课程的评价对象（一个JudgeDto代表一个用户评价了此老师教的此课）

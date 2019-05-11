@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教师评价系统</title>
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="css/common.min.css" rel="stylesheet">
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>评教关系表格</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="">
+                        <a onclick="fnClickAddRow();" href="javascript:void(0);" class="btn btn-primary ">添加行</a>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover " id="permissionTable">
+                        <tfoot>
+                        <tr>
+                            <th>序列</th>
+                            <th></th>
+                            <th>课程名称</th>
+                            <th></th>
+                            <th>授课教师账号</th>
+                            <th>授课教师真实姓名</th>
+                            <th></th>
+                            <th>听课账号</th>
+                            <th>听课真实姓名</th>
+                            <th>操作</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/content.min.js?v=1.0.0"></script>
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script>
+    function format ( d ) {
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+            '<tr>'+
+            '<td>userId:</td>'+
+            '<td>'+d.userId+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td>courseId:</td>'+
+            '<td>'+d.courseId+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td>teacherId:</td>'+
+            '<td>'+d.teacherId+'</td>'+
+            '</tr>'+
+            '</table>';
+    }
+    function initPermissionTable() {
+        var table = $('#permissionTable').dataTable({
+            'bStateSave': true,
+            "bAutoWidth": false,
+            "bSort": true,
+            "processing": false,
+            "serverSide": false,
+            "sServerMethod": "get", //post
+            "bDestroy": true,
+            "ajax": {
+                "url": encodeURI("query/permission"),
+                "type": "get",
+                "dataSrc": function (result) {
+                    if(result.code != 200){
+                        layer.alert("登录信息过期，请重新登录~", {
+                            skin: 'layui-layer-lan',
+                            closeBtn: 0,
+                            shift: 1 //动画类型
+                        }, function(){
+                            window.localStorage.clear();
+                            window.parent.location.href="back.html";
+                        });
+                    } else {
+                        return result.data;
+                    }
+                },
+                "headers": {
+                    "token": $.cookie("Token")
+                },
+                "error": function () {
+                }
+            },
+            "columns": [{
+                "data": null,
+                "title": "序号",
+                "class": 'details-control'
+            }, {
+                "data": "courseId",
+                "title": "课程id"
+            }, {
+                "data": "courseName",
+                "title": "课程名称",
+                "class": 'details-control'
+            }, {
+                "data": "teacherId",
+                "title": "授课教师id"
+            }, {
+                "data": "teacherName",
+                "title": "授课教师账号",
+                "class": 'details-control'
+            }, {
+                "data": "teacherNikeName",
+                "sDefaultContent": '用户未更新',
+                "title": "授课教师真实姓名",
+                "class": 'details-control'
+            }, {
+                "data": "userId",
+                "title": "学生id"
+            }, {
+                "data": "userName",
+                "title": "听课账号",
+                "class": 'details-control'
+            }, {
+                "data": "userNikeName",
+                "sDefaultContent": '用户未更新',
+                "title": "听课真实姓名",
+                "class": 'details-control'
+            }, {
+                "data": null,
+                "title": "操作"
+            }],
+            "order": [
+                [0, null]
+            ],
+            "columnDefs": [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                },
+                {
+                    "targets": [1],
+                    "visible": false,
+                    "searchable": true
+                },
+                {
+                    "targets": [3],
+                    "visible": false,
+                    "searchable": true
+                },
+                {
+                    "targets": [6],
+                    "visible": false,
+                    "searchable": true
+                },
+                {
+                    "targets": [9],
+                    "render": function (data, type, row) {
+                        return "<i class='fa fa-trash-o m-fa del-btn' style='cursor: pointer' id=\'" + row.id + "\'></i>";
+                    }
+                }],
+            "language": {
+                "lengthMenu": "每页 _MENU_ 条记录",
+                "zeroRecords": "没有找到记录",
+                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页，共 _TOTAL_ 项 )",
+                "infoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "search" : "搜索:",
+                "emptyTable" : "没有数据",
+                "loadingRecords" : "载入中...",
+                "paginate" : {
+                    "first" : "首页",
+                    "previous" : "上页",
+                    "next" : "下页",
+                    "last" : "末页"
+                }
+            }
+        });
+        // 首列索引
+        table.api().on('order.dt search.dt',
+            function() {
+                table.api().column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+        // 添加行点击弹出详情信息
+        $('#permissionTable tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.api().row(tr);
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+            } else {
+                // Open this row
+                row.child(format(row.data())).show();
+            }
+        });
+
+        // 单列搜索
+        $('#permissionTable tfoot th').each(function () {
+            var index = $(this).index();
+            if(index > 0 && index < 6){
+                var title = $('#permissionTable thead th').eq($(this).index()).text();
+                $(this).html('<input type="text" placeholder="搜索 ' + title + '" />');
+            }
+        });
+        table.api().columns().eq(0).each(function (colIdx) {
+            // 防止隐藏列干扰
+            if(colIdx == 2 || colIdx == 4 || colIdx == 5|| colIdx == 7|| colIdx == 8){
+                $('input', table.api().column(colIdx).footer()).on('keyup change', function () {
+                    console.log(colIdx);
+                    table.api()
+                        .column(colIdx)
+                        .search(this.value)
+                        .draw();
+                });
+            }
+        });
+
+        //删除
+        $("#permissionTable tbody").on("click", ".del-btn", function () {
+            var id =$(this).attr("id");
+            var data = {id: id };
+            layer.confirm('您确定删除这条权限？', {
+                closeBtn: 0,
+                btn: ['取消','确定'] //按钮
+            }, function(){
+                layer.msg('已取消~', {icon: 1});
+            }, function(){
+                //执行删除
+                ajaxCommon({
+                    url: 'userCourse/userCourse',
+                    async: false,
+                    type: "delete",
+                    data: JSON.stringify(data)
+                }, function(obj) {
+                    if(obj.code == 200){
+                        commonAlert("删除成功！");
+                        initPermissionTable();
+                    } else {
+                        commonAlert("删除失败！原因："+obj.msg);
+                    }
+                }, true);
+            });
+        });
+
+        //新增一行表格
+        // $("#newAttribute").unbind('click').click(function () {
+        //     if ($("#newAttributeTable tbody tr:last td i").eq(0).attr('id') == -1) {
+        //         return;
+        //     }
+        //     $('#newAttributeTable').dataTable().fnAddData([]);
+        //     var nTrsLength = $("#newAttributeTable tbody tr").length;
+        //     var nTrs = $("#newAttributeTable tbody tr").eq(nTrsLength - 1);
+        //     var nIs = nTrs.find("td").eq(2).find("i").eq(0)
+        //     nIs.click();
+        // });
+    }
+    $(document).ready(function () {
+        initPermissionTable();
+    });
+
+    function fnClickAddRow() {
+        $("#editable").dataTable().fnAddData(["Custom row", "New row", "New row", "New row", "New row"])
+    };
+
+</script>
+</body>
+</html>

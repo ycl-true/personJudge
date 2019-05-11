@@ -95,3 +95,9 @@
 .tab-pane-hight{
     height: 388px !important;
 }
+
+tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}

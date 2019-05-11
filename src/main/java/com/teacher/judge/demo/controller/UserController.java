@@ -60,7 +60,12 @@ public class UserController {
             // 存在则插入token表
             token = tokenService.insertToken(user.getUserId());
             UserVo vo = new UserVo();
-            BeanUtils.copyProperties(user, vo);
+            if(user.getPersonType().equals(Constant.ADMIN.getValue())){
+                vo.setUserName(user.getUserName());
+                vo.setUserId(user.getUserId());
+            } else {
+                BeanUtils.copyProperties(user, vo);
+            }
             vo.setToken(token);
             System.out.println(ApplyUtil.success(vo));
             return ApplyUtil.success(vo);

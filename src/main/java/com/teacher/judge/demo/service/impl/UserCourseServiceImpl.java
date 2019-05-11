@@ -61,4 +61,16 @@ public class UserCourseServiceImpl implements UserCourseService {
         List<Object> teacherIdList = userCourseDao.findTeachersByCourseId(courseId);
         return teacherIdList;
     }
+
+    @Override
+    public List<UserCourse> findUserCourseList() {
+        return userCourseDao.findAll();
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        UserCourse userCourse = userCourseDao.getOne(id);
+        judgeService.deleteJudge(userCourse);
+        userCourseDao.deleteById(id);
+    }
 }

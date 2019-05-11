@@ -82,6 +82,9 @@ var ajaxCommon = function(opt, callback, returnFlag) {
                     alert("用户状态过期，请重新登录！");
                     window.location.href = "login.html";
                     return false;
+                } else if(result.code == 502){
+                    alert("用户已失效！");
+                    return false;
                 } else if(result.code == 100){
                     // alert("参数缺失!");
                     alert("系统错误!请联系管理员！100");
@@ -107,6 +110,14 @@ var ajaxCommon = function(opt, callback, returnFlag) {
 
 function getUserId(){
     var result = eval('(' + window.localStorage.getItem("User") + ')');
+    if(result == null || !result.userId){
+        window.location.href="login.html"
+    }
+    return result.userId;
+}
+
+function getAdminId(){
+    var result = eval('(' + window.localStorage.getItem("Admin") + ')');
     return result.userId;
 }
 

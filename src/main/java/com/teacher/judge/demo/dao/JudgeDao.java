@@ -16,5 +16,5 @@ public interface JudgeDao extends JpaRepository<Judge, String> {
             "and jud.teachId = :teacherId and jud.valid = :valid"
             )
     List<JudgeDto> findByTeachIdAndCourseIdAndValid(String teacherId, String courseId, String valid);
-
+    Judge findByUserIdAndCourseIdAndTeachIdAndValid(String userId, String courseId, String teacherId, String valid);
 }
