@@ -10,7 +10,8 @@ public enum ResultEnum {
     PARAM_NOT_EXIST(100,"参数不全！"),
     USER_NOT_EXIST(500,"账号或密码错误！"),
     USER_IS_EXIST(501,"用户已注册！"),
-    USER_IS_EXPIRE(502,"用户已失效")
+    USER_IS_EXPIRE(502,"用户已失效"),
+    ADMIN_UC_IS_EXIST(600,"此权限已经存在")
     ;
     private Integer code;
     private String msg;

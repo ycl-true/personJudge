@@ -8,9 +8,14 @@ import com.teacher.judge.demo.exception.TeachException;
 import com.teacher.judge.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -59,6 +64,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUserName(String userName) {
         return userDao.findUserByUserName(userName);
+    }
+
+    @Cacheable(value = "UserGroup")
+    @Override
+    public Map<String, String> getAllByFlag(String flag) {
+        List<User> list = null;
+        if(flag.equals(Constant.TEACHER.getValue())){
+            list = userDao.findAllByPersonType(flag);
+        } else if(flag.equals(Constant.STUDENT.getValue())){
+            list = userDao.findAllByPersonType(Constant.STUDENT.getValue());
+            list.addAll(userDao.findAllByPersonType(Constant.PROFESSIONAL.getValue()));
+        }
+        Map<String, String> map = new HashMap<>();
+        for (User user: list) {
+            map.put(user.getUserId(), "真实姓名:"+user.getNikeName()+",账号:"+user.getUserName());
+        }
+        return map;
     }
 
 }

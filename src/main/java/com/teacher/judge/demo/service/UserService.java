@@ -2,6 +2,8 @@ package com.teacher.judge.demo.service;
 
 import com.teacher.judge.demo.bo.User;
 
+import java.util.Map;
+
 public interface UserService {
     /** 查找正常的用户*/
     User findById(String userId);
@@ -20,5 +22,7 @@ public interface UserService {
 
     /**通过账号查找用户*/
     User findByUserName(String userName);
+
+    Map<String, String> getAllByFlag(String flag);
 
 }

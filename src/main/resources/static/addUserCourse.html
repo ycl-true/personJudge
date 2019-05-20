@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教师评价系统</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="css/common.min.css" rel="stylesheet">
+    <link href="css/plugins/chosen/chosen.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content" style="padding-top: 30px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <!--<div class="ibox-title">-->
+                        <!--<h5>新增选项</h5>-->
+                    <!--</div>-->
+                    <div class="ibox-content" id="ibox-content">
+                        <h3>1.请选择课程</h3>
+                        <div class="form-group" align="center">
+                            <!--<label class="font-noraml">基本示例</label>-->
+                            <div class="input-group" align="left">
+                                <select data-placeholder="选择课程.." class="chosen-select" id="seleCourse" style="width:320px;" tabindex="2">
+                                    <option value="">选择课程..</option>
+                                </select>
+                            </div>
+                        </div>
+                        <h3>2.请选择授课教师</h3>
+                        <div class="form-group" align="center">
+                            <div class="input-group" align="left">
+                                <select data-placeholder="选择授课教师.." class="chosen-select" id="seleTeacher" style="width:320px;" tabindex="2">
+                                    <option value="">选择需授课教师..</option>
+                                </select>
+                            </div>
+                        </div>
+                        <h3>3.请选择听课人</h3>
+                        <div class="form-group" align="center">
+                            <div class="input-group" align="left">
+                                <select data-placeholder="选择听课人.." class="chosen-select" id="seleUser" style="width:320px;" tabindex="2">
+                                    <option value="">选择听课人..</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" id="padding-reset">
+                            <table class="table" id="content-1">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="width: 200px">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger m-r-sm" id="submit" onclick="submitQuery();">添加</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/common.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/plugins/chosen/chosen.jquery.js"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script>
+    var config = {
+        ".chosen-select": {
+            no_results_text: "没有相关内容:",
+            // 全模糊匹配
+            search_contains: true
+        }
+    };
+    // 初始化选择项属性
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
+    function tips(msg){
+        layer.tips(msg, $("#submit"), {
+            tips: [4, '#3595CC'],
+            time: 4e3
+        });
+        return false;
+    }
+    function submitQuery(){
+        var selected = $("#seleCourse").children('option:selected').val();
+        var selected2 = $("#seleTeacher").children('option:selected').val();
+        var selected3 = $("#seleUser").children('option:selected').val();
+        // 验证
+        if(!selected){
+            tips('别漏选课程哟~');
+        }
+        if(!selected2){
+            tips('别漏选授课人哟~');
+        }
+        if(!selected3){
+            tips('别漏选听课人哟~');
+        }
+        var params = {
+            courseId: selected,
+            userId: selected3,
+            teacherId: selected2
+        };
+        ajaxCommon({
+            url: 'userCourse/userCourse',
+            data: JSON.stringify(params),
+            async: false
+        }, function(obj) {
+            if(obj.code == 200){
+                layer.alert('新增成功~', {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0,
+                    shift: 1 //动画类型
+                } , function(){
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.reload();
+                    parent.layer.close(index);
+                });
+            } else if(obj.code == 600){
+                commonAlert(obj.msg);
+            }
+        }, true);
+    }
+    $(document).ready(function () {
+        ajaxCommon({
+            url: 'course/courseMap',
+            type: 'GET'
+        }, function(obj) {
+            if(obj.code == 200){
+                for(var key in obj.data){
+                    $("#seleCourse").append('<option value="'+key+'" hassubinfo="true">《'+obj.data[key]+'》</option>');
+                }
+                $("#seleCourse").trigger("chosen:updated");
+            }
+        }, false);
+        //老师
+        ajaxCommon({
+            url: 'user/users?type=0',
+            type: 'GET'
+        }, function(obj) {
+            if(obj.code == 200){
+                for(var key in obj.data){
+                    $("#seleTeacher").append('<option value="'+key+'" hassubinfo="true">'+obj.data[key]+'</option>');
+                }
+                $("#seleTeacher").trigger("chosen:updated");
+            }
+        }, false);
+        // 学生或专家
+        ajaxCommon({
+            url: 'user/users?type=1',
+            type: 'GET'
+        }, function(obj) {
+            if(obj.code == 200){
+                for(var key in obj.data){
+                    $("#seleUser").append('<option value="'+key+'" hassubinfo="true">'+obj.data[key]+'</option>');
+                }
+                $("#seleUser").trigger("chosen:updated");
+            }
+        }, false);
+    });
+</script>
+</body>
+</html>

@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -153,5 +154,15 @@ public class UserController {
             // 不存在则抛出异常
             throw new TeachException(ResultEnum.USER_NOT_EXIST);
         }
+    }
+
+    @GetMapping(value = "/users")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "header", name = "token", value = "token值", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "type", value = "查询的type", required = true, dataType = "String")
+    })
+    public Result getCourseMap(@RequestParam(value = "type") String type){
+        Map<String, String> map = userService.getAllByFlag(type);
+        return ApplyUtil.success(map);
     }
 }

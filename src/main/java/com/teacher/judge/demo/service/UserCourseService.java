@@ -11,4 +11,5 @@ public interface UserCourseService {
     List<Object> getTeachersByCourseId(String courseId);
     List<UserCourse> findUserCourseList();
     void deleteById(Integer id);
+    UserCourse save(UserCourse userCourse);
 }

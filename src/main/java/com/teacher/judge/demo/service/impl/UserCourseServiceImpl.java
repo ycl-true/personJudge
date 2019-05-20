@@ -73,4 +73,9 @@ public class UserCourseServiceImpl implements UserCourseService {
         judgeService.deleteJudge(userCourse);
         userCourseDao.deleteById(id);
     }
+
+    @Override
+    public UserCourse save(UserCourse userCourse) {
+        return userCourseDao.save(userCourse);
+    }
 }
