@@ -75,7 +75,6 @@
             '</tr>'+
             '</table>';
     }
-    var tableObj;
     function initPermissionTable() {
         var table = $('#permissionTable').dataTable({
             'bStateSave': true,
@@ -194,7 +193,6 @@
                 }
             }
         });
-        tableObj = table;
         // 首列索引
         table.api().on('order.dt search.dt',
             function() {
@@ -240,7 +238,7 @@
         });
 
         //删除
-        $("#permissionTable tbody").unbind("click").on("click", ".del-btn", function () {
+        $("#permissionTable tbody").on("click", ".del-btn", function () {
             var id =$(this).attr("id");
             var data = {id: id };
             layer.confirm('您确定删除这条权限？', {
@@ -265,6 +263,7 @@
                 }, true);
             });
         });
+
     }
     $(document).ready(function () {
         initPermissionTable();
