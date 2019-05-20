@@ -101,3 +101,7 @@ tfoot input {
     padding: 3px;
     box-sizing: border-box;
 }
+
+.tdClass{
+    text-align:center
+}
