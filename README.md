@@ -5,3 +5,15 @@
 
 #### 效果图：
 ![login](https://github.com/ycl-true/imgTemp/blob/master/login.png)
+
+![rank](https://github.com/ycl-true/imgTemp/blob/master/rank.png)
+
+![teacher](https://github.com/ycl-true/imgTemp/blob/master/teacher.png)
+
+![message](https://github.com/ycl-true/imgTemp/blob/master/message.png)
+
+![judge](https://github.com/ycl-true/imgTemp/blob/master/judge.png)
+
+![user](https://github.com/ycl-true/imgTemp/blob/master/user.png)
+
+![back](https://github.com/ycl-true/imgTemp/blob/master/back.png)
