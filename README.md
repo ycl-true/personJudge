@@ -1,1 +1,1 @@
-# teachJudge
+# personJudge
