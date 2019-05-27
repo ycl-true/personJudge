@@ -73,8 +73,7 @@ public class UserServiceImpl implements UserService {
         if(flag.equals(Constant.TEACHER.getValue())){
             list = userDao.findAllByPersonType(flag);
         } else if(flag.equals(Constant.STUDENT.getValue())){
-            list = userDao.findAllByPersonType(Constant.STUDENT.getValue());
-            list.addAll(userDao.findAllByPersonType(Constant.PROFESSIONAL.getValue()));
+            list = userDao.findAllByValid(Constant.YES.getValue());
         }
         Map<String, String> map = new HashMap<>();
         for (User user: list) {
