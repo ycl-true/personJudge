@@ -1,4 +1,6 @@
 # personJudge
+
+交流QQ群：895862874 入群答案 哈萨key
 ## 此项目用到的技术：
 ### 后端：SpringBoot/JPA/mysql/cache/前后端分离(nginx做静态转发)/swagger
 ### 前端：bootstrap+Jquery及其插件：jquery-cookie,toastr,steps,validate,wnumb,nouislider,DataTables,layer,chosen,echarts
