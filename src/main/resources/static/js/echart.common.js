@@ -39,7 +39,7 @@ function setRankHtml(objArray) {
     option = {
         title: {
             text: "教师排名",
-            subtext: $("#sele").children('option:selected').text()
+            subtext: ''
         },
         tooltip: {
             trigger: 'axis',
@@ -64,7 +64,7 @@ function setRankHtml(objArray) {
         },
         series: [
             {
-                name: $("#sele").children('option:selected').text(),
+                name: '',
                 type: 'bar',
                 data: scopeArray,
                 label: {

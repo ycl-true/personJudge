@@ -33,15 +33,15 @@
                         </p>
 
                         <form id="form" action="#" class="wizard-big">
-                            <h1>课前</h1>
+                            <h1>选择评价</h1>
                             <fieldset>
-                                <h2>教师在课前的表现</h2>
+                                <!--<h2>教师在课前的表现</h2>-->
                                 <div class="row">
                                     <div class="col-sm-8" id="beforeClass">
                                         <!--待填充-->
                                     </div>
                                     <input name="validBeforeClass" type="text" style="height:0.5px;width:0px;padding:0px;margin:0px;"/>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-4" style="margin-top: 120px">
                                         <div class="text-center">
                                             <div style="margin-top: 20px">
                                                 <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
@@ -50,43 +50,43 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <h1>课中</h1>
-                            <fieldset>
-                                <h2>教师在课堂时的表现</h2>
-                                <div class="row">
-                                    <div class="col-sm-8" id="inClass">
-                                        <!--待填充-->
-                                    </div>
-                                    <input name="validInClass" type="text" style="height:0.5px;width:0px;padding:0px;margin:0px;"/>
-                                    <div class="col-sm-4">
-                                        <div class="text-center">
-                                            <div style="margin-top: 20px">
-                                                <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
+                            <!--<h1>课中</h1>-->
+                            <!--<fieldset>-->
+                                <!--<h2>教师在课堂时的表现</h2>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-sm-8" id="inClass">-->
+                                        <!--&lt;!&ndash;待填充&ndash;&gt;-->
+                                    <!--</div>-->
+                                    <!--<input name="validInClass" type="text" style="height:0.5px;width:0px;padding:0px;margin:0px;"/>-->
+                                    <!--<div class="col-sm-4">-->
+                                        <!--<div class="text-center">-->
+                                            <!--<div style="margin-top: 20px">-->
+                                                <!--<i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</fieldset>-->
 
-                            <h1>课后</h1>
-                            <fieldset>
-                                <h2>教师在课后时的表现</h2>
-                                <div class="row">
-                                    <div class="col-sm-8" id="afterClass">
-                                        <!--待填充-->
-                                    </div>
-                                    <input name="validAfterClass" type="text" style="height:0.5px;width:0px;padding:0px;margin:0px;"/>
-                                    <div class="col-sm-4">
-                                        <div class="text-center">
-                                            <div style="margin-top: 20px">
-                                                <i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
+                            <!--<h1>课后</h1>-->
+                            <!--<fieldset>-->
+                                <!--<h2>教师在课后时的表现</h2>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-sm-8" id="afterClass">-->
+                                        <!--&lt;!&ndash;待填充&ndash;&gt;-->
+                                    <!--</div>-->
+                                    <!--<input name="validAfterClass" type="text" style="height:0.5px;width:0px;padding:0px;margin:0px;"/>-->
+                                    <!--<div class="col-sm-4">-->
+                                        <!--<div class="text-center">-->
+                                            <!--<div style="margin-top: 20px">-->
+                                                <!--<i class="fa fa-sign-in" style="font-size: 180px;color: #e5e5e5 "></i>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</fieldset>-->
 
-                            <h1>完成</h1>
+                            <h1>完成提交</h1>
                             <fieldset>
                                 <h2>提交须知</h2>
                                 <div class="row">
@@ -147,9 +147,13 @@
             minHightCount.push(list.length);
         }
         function resizeMinHight(index){
-            var hight = minHightCount[index] * 70 + 100;
-            // loginfo(hight);
-            $(".content.clearfix").css("min-height",hight+"px");
+            if(!!minHightCount[index]){
+                var hight = minHightCount[index] * 70 + 100;
+                // loginfo(hight);
+                $(".content.clearfix").css("min-height",hight+"px");
+            } else { //最后的页面
+                $(".content.clearfix").css("min-height","320px");
+            }
         }
         function getQuestionItemHtml(info, index){
             var html = "";
@@ -187,6 +191,7 @@
                     for(var i in data){
                         showHtml(data[i]);
                     }
+
                 }
             }, false);
             var subArray = new Array(minHightCount.length);
@@ -241,6 +246,7 @@
                     form.validate().settings.ignore = ":disabled,:hidden";
                     if(form.valid()){
                         // 重新定义min_hight
+                        console.log(minHightCount[newIndex])
                         resizeMinHight(newIndex);
                         return true;
                     } else {
@@ -300,6 +306,7 @@
                     }
                 }
             });
+            resizeMinHight(0);
         });
     </script>
 </body>

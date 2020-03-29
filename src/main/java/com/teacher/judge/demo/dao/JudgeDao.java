@@ -12,9 +12,9 @@ import java.util.List;
 public interface JudgeDao extends JpaRepository<Judge, String> {
     int countByUserIdAndCourseIdAndTeachIdAndValid(String userId, String course, String teacherId, String valid);
 
-    @Query(value = "select new com.teacher.judge.demo.dto.JudgeDto(jud.teachId, jud.courseId, jud.judgeType, jud.judgeId) from Judge jud where jud.courseId = :courseId " +
-            "and jud.teachId = :teacherId and jud.valid = :valid"
+    @Query(value = "select new com.teacher.judge.demo.dto.JudgeDto(jud.teachId, jud.courseId, jud.judgeType, jud.judgeId) from Judge jud where " +
+            "jud.teachId = :teacherId and jud.valid = :valid"
             )
-    List<JudgeDto> findByTeachIdAndCourseIdAndValid(String teacherId, String courseId, String valid);
+    List<JudgeDto> findByTeachIdAndValid(String teacherId, String valid);
     Judge findByUserIdAndCourseIdAndTeachIdAndValid(String userId, String courseId, String teacherId, String valid);
 }

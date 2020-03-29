@@ -16,4 +16,8 @@ public interface UserCourseDao extends JpaRepository<UserCourse, Integer> {
     @Query(value = "select distinct uc.teacher_Id from user_course uc where uc.course_Id = :courseId",
             nativeQuery = true)
     List<Object> findTeachersByCourseId(@Param("courseId") String courseId);
+
+    @Query(value = "select distinct uc.teacher_Id from user_course uc ",
+            nativeQuery = true)
+    List<Object> findAllTeachersId();
 }

@@ -62,6 +62,13 @@ public class UserCourseServiceImpl implements UserCourseService {
         return teacherIdList;
     }
 
+    // 查找所有教师id
+    @Override
+    public List<Object> findAllTeachersId(){
+        List<Object> teacherIdList = userCourseDao.findAllTeachersId();
+        return teacherIdList;
+    }
+
     @Override
     public List<UserCourse> findUserCourseList() {
         return userCourseDao.findAll();

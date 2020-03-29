@@ -9,6 +9,7 @@ public interface UserCourseService {
     List<TeacherCourseVo> getTeacherByUserId(String userId);
     boolean allowJudge(String userId, String courseId, String teacherId);
     List<Object> getTeachersByCourseId(String courseId);
+    List<Object> findAllTeachersId();
     List<UserCourse> findUserCourseList();
     void deleteById(Integer id);
     UserCourse save(UserCourse userCourse);

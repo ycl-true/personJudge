@@ -19,7 +19,7 @@
     <div class="wrapper wrapper-content" style="padding-top: 30px;">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>排名展示</h5>
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" style="display: none">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>查询选项</h5>
@@ -153,7 +153,7 @@
             return Number($("#"+obj).text().split("%")[0]);
         }
         function submitQuery(){
-            var selected = $("#sele").children('option:selected').val();
+            var selected = 'all';
             // 验证
             if(!selected){
                 layer.tips('别漏选课程哟~', $("#submit"), {
@@ -165,7 +165,7 @@
             var params = {
               courseId: selected,
               categoryProp: {
-                  A: getNum("skip2-value-1"),B: getNum("skip2-value-2"), C:getNum("skip2-value-3")
+                  A: 100,B: 0, C:0
               },
               judgeProp: {
                   ST: getNum("skip-value-1"),TT:getNum("skip-value-3"),PT:getNum("skip-value-4"),TS:getNum("skip-value-2")
@@ -263,6 +263,7 @@
             slider2.noUiSlider.on('update.one', function (values, handle, unencoded, positions) {
                 calculatAndSet(values, handle, skipValues_2);
             });
+            submitQuery();
         });
     </script>
 </body>

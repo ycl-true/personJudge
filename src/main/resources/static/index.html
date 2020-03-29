@@ -35,12 +35,12 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
+                        <li class="dropdown" id="_rank" style="display: none">
                             <a aria-expanded="false" role="button" href="javascript:void(0)" id="menu_rank" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-bar-chart"></i> 排名
                             </a>
                         </li>
-                        <li class="dropdown">
+                        <li class="dropdown" id="_judge" style="display: none">
                             <a aria-expanded="false" role="button" href="javascript:void(0)" id="menu_judge" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-check-square"></i>评教
                                 <span id="toDoJudge" class="label label-info" style="padding: 1px 4px"></span>
@@ -56,16 +56,16 @@
             </nav>
         </div>
         <div class="row J_mainContent" id="content-main2">
-            <iframe class="J_iframe" name="iframe" width="100%" height="100%" src="rank.html" frameborder="0" seamless="" style="display: inline;">
+            <iframe class="J_iframe" name="iframe" width="100%" height="100%" src="" frameborder="0" seamless="" style="display: inline;">
             </iframe>
         </div>
         <div class="footer">
-            <div class="pull-right">
-                By：<a href="https://github.com/ycl-true/personJudge" target="_blank">lyq</a>
-            </div>
-            <div>
-                <strong>Copyright</strong> Graduation project &copy; 2019
-            </div>
+            <!--<div class="pull-right">-->
+                <!--By：<a href="https://github.com/ycl-true/personJudge" target="_blank">lyq</a>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<strong>Copyright</strong> Graduation project &copy; 2019-->
+            <!--</div>-->
         </div>
     </div>
 </div>
@@ -79,6 +79,7 @@
         $("iframe[name='iframe']").attr("src",url);
     }
     $(document).ready(function () {
+        var user = eval('(' + window.localStorage.getItem("User") + ')');
         $("#menu_loginOut").click(function(){
             ajaxCommon({
                 url: 'user/loginOut',
@@ -91,7 +92,14 @@
                 }
             }, false);
         });
-        updateTodoJudgeCount();
+        if(user.personType == '1'){ //学生
+            $("#_judge").css('display','block');
+            updateTodoJudgeCount();
+            goTo("teachers.html");
+        } else { //教师或者专家 不需要评教
+            $("#_rank").css('display','block');
+            goTo("rank.html");
+        }
         $("#menu_rank").click(function(){
             goTo("rank.html");
         });

@@ -86,7 +86,7 @@ public class JudgeServiceImpl implements JudgeService {
     // 组装答案并计算分数，最后排序 -> 所有教该课程的老师的排名
     @Override
     public List<RankVo> getRank(RankParam rankParam){
-        List<Object> teachersIdList = userCourseService.getTeachersByCourseId(rankParam.getCourseId());
+        List<Object> teachersIdList = userCourseService.findAllTeachersId();
         List<RankVo> rankVoList = new ArrayList<>();
         // 计算分数
         for (Object obj: teachersIdList) {
@@ -120,7 +120,8 @@ public class JudgeServiceImpl implements JudgeService {
 
     // 填充内容,返回所有人对此老师课程的评价对象（一个JudgeDto代表一个用户评价了此老师教的此课）
     public List<JudgeDto> getJudgeDtoByTeacherIdAndCourseId(String teacherId, RankParam rankParam){
-        List<JudgeDto> dtoList = judgeDao.findByTeachIdAndCourseIdAndValid(teacherId, rankParam.getCourseId(), Constant.YES.getValue());
+        List<JudgeDto> dtoList = judgeDao.findByTeachIdAndValid(teacherId, Constant.YES.getValue());
+        System.out.println("所有评价大类"+ dtoList.toString());
         if(dtoList != null && !dtoList.isEmpty()){
             for(JudgeDto dto : dtoList){
                 // 计算各个大类的相关分数
@@ -150,9 +151,7 @@ public class JudgeServiceImpl implements JudgeService {
                 // 计算公式：假设A类评价分13，总分30，用户选择33%---B类评价分63，总分90，用户选择33%---C类评价分13，总分30，用户选择34%
                 // = 150*((13/30)*33% + (63/90)*33% + (13/30)*34%)
                 RankParam.CategoryProp prop = rankParam.getCategoryProp();
-                dto.setFinalScope(MathUtil.div(questionTotal, 100) * (MathUtil.div(dto.getTotalA() * prop.getA(), dto.getTargetA()) +
-                        MathUtil.div(dto.getTotalB() * prop.getB(), dto.getTargetB()) +
-                        MathUtil.div(dto.getTotalC() * prop.getC(), dto.getTargetC())));
+                dto.setFinalScope(MathUtil.div(questionTotal, 100) * (MathUtil.div(dto.getTotalA() * prop.getA(), dto.getTargetA())));
             }
         } else {
             // 还未评价

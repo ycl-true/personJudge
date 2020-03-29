@@ -30,7 +30,7 @@
                         <a onclick="fnClickAddRow();" href="javascript:void(0);" class="btn btn-primary ">添加关系</a>
                     </div>
                     <table class="table table-striped table-bordered table-hover " id="permissionTable">
-                        <tfoot>
+                        <tfoot style="display: none">
                         <tr>
                             <th>序列</th>
                             <th></th>
@@ -40,7 +40,6 @@
                             <th>授课教师真实姓名</th>
                             <th></th>
                             <th>听课账号</th>
-                            <th>听课真实姓名</th>
                             <th>操作</th>
                         </tr>
                         </tfoot>
@@ -137,12 +136,9 @@
                 "data": "userName",
                 "title": "听课账号",
                 "class": 'details-control'
-            }, {
-                "data": "userNikeName",
-                "sDefaultContent": '用户未更新',
-                "title": "听课真实姓名",
-                "class": 'details-control'
-            }, {
+            },
+
+            {
                 "data": null,
                 "title": "操作",
                 "class": 'tdClass'
@@ -172,7 +168,7 @@
                     "searchable": true
                 },
                 {
-                    "targets": [9],
+                    "targets": [8],
                     "render": function (data, type, row) {
                         return "<i class='fa fa-trash-o m-fa del-btn' style='cursor: pointer' id=\'" + row.id + "\'></i>";
                     }
@@ -226,16 +222,13 @@
             }
         });
         table.api().columns().eq(0).each(function (colIdx) {
-            // 防止隐藏列干扰
-            if(colIdx == 2 || colIdx == 4 || colIdx == 5|| colIdx == 7|| colIdx == 8){
-                $('input', table.api().column(colIdx).footer()).on('keyup change', function () {
-                    console.log(colIdx);
-                    table.api()
-                        .column(colIdx)
-                        .search(this.value)
-                        .draw();
-                });
-            }
+            $('input', table.api().column(colIdx).footer()).on('keyup change', function () {
+                console.log(colIdx);
+                table.api()
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
         });
 
         //删除

@@ -75,19 +75,19 @@
                                                  <input id="description" name="description" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error">
                                              </div>
                                          </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">更改密码：</label>
-                                            <div class="col-sm-8">
-                                                <input id="passWord" name="passWord" class="form-control" type="password">
-                                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> (＞﹏＜) 密码更改选填哦~</span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" id="confirm-group">
-                                            <label class="col-sm-3 control-label">确认新密码：</label>
-                                            <div class="col-sm-8">
-                                                <input id="confirm_passWord" name="confirm_passWord" class="form-control" type="password">
-                                            </div>
-                                        </div>
+                                        <!--<div class="form-group">-->
+                                            <!--<label class="col-sm-3 control-label">更改密码：</label>-->
+                                            <!--<div class="col-sm-8">-->
+                                                <!--<input id="passWord" name="passWord" class="form-control" type="password">-->
+                                                <!--<span class="help-block m-b-none"><i class="fa fa-info-circle"></i> (＞﹏＜) 密码更改选填哦~</span>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="form-group" id="confirm-group">-->
+                                            <!--<label class="col-sm-3 control-label">确认新密码：</label>-->
+                                            <!--<div class="col-sm-8">-->
+                                                <!--<input id="confirm_passWord" name="confirm_passWord" class="form-control" type="password">-->
+                                            <!--</div>-->
+                                        <!--</div>-->
                                         <div class="form-group">
                                             <div class="col-sm-8 col-sm-offset-9">
                                                 <button class="btn btn-primary" onclick="updateUserInfo();return false;">更新信息</button>
@@ -178,8 +178,8 @@
             nikeName: $("#userName").val(),
             email: $("#email").val(),
             telphone: $("#telphone").val(),
-            description: $("#description").val(),
-            rePassword: $("#passWord").val()
+            description: $("#description").val()
+            // rePassword: $("#passWord").val()
         };
         if(hasNameAready){
             condition.nikeName = null;
